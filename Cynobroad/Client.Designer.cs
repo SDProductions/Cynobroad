@@ -62,8 +62,10 @@
             this.ChatDisplay.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ChatDisplay.Location = new System.Drawing.Point(10, 50);
             this.ChatDisplay.Name = "ChatDisplay";
+            this.ChatDisplay.ReadOnly = true;
             this.ChatDisplay.Size = new System.Drawing.Size(480, 370);
             this.ChatDisplay.TabIndex = 1;
+            this.ChatDisplay.TabStop = false;
             this.ChatDisplay.Text = "";
             // 
             // SendMsgBox

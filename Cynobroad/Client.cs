@@ -42,12 +42,12 @@ namespace Cynobroad
 
                 if (login.Username == "")
                 {
-                    Close();
+                    this.Close();
                 }
                 else
                 {
                     username = login.Username;
-                    Show();
+                    this.Show();
                 }
 
                 SendMsgBox.Focus();
@@ -59,8 +59,10 @@ namespace Cynobroad
 
         private void InitializeSender()
         {
-            sendingClient = new UdpClient(broadcastAddress, port);
-            sendingClient.EnableBroadcast = true;
+            sendingClient = new UdpClient(broadcastAddress, port)
+            {
+                EnableBroadcast = true
+            };
         }
 
         private void InitializeReceiver()
@@ -68,8 +70,10 @@ namespace Cynobroad
             receivingClient = new UdpClient(port);
 
             ThreadStart start = new ThreadStart(Receiver);
-            receivingThread = new Thread(start);
-            receivingThread.IsBackground = true;
+            receivingThread = new Thread(start)
+            {
+                IsBackground = true
+            };
             receivingThread.Start();
         }
 

@@ -13,6 +13,7 @@ namespace Cynobroad
     public partial class Login : Form
     {
         private string username = "";
+        private bool verifiedAccept = false;
 
         public string Username
         {
@@ -34,12 +35,14 @@ namespace Cynobroad
                 return;
             }
 
-            Close();
+            verifiedAccept = true;
+            this.Hide();
         }
 
         private void Login_FormClosing(object sender, FormClosingEventArgs e)
         {
-            username = "";
+            if (!verifiedAccept)
+                username = "";
         }
     }
 }
