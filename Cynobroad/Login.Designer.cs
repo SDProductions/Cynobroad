@@ -30,20 +30,23 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             this.ControlBar = new System.Windows.Forms.Panel();
+            this.Window_Close = new System.Windows.Forms.PictureBox();
             this.Window_Title = new System.Windows.Forms.Label();
+            this.Window_Icon = new System.Windows.Forms.PictureBox();
             this.Label_Username = new System.Windows.Forms.Label();
             this.Label_Password = new System.Windows.Forms.Label();
             this.Input_Username = new System.Windows.Forms.TextBox();
-            this.Input_Password = new System.Windows.Forms.TextBox();
+            this.Input_ServerIP = new System.Windows.Forms.TextBox();
             this.Accept = new System.Windows.Forms.Button();
-            this.Window_Icon = new System.Windows.Forms.PictureBox();
             this.ControlBar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Window_Close)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Icon)).BeginInit();
             this.SuspendLayout();
             // 
             // ControlBar
             // 
             this.ControlBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(25)))), ((int)(((byte)(35)))));
+            this.ControlBar.Controls.Add(this.Window_Close);
             this.ControlBar.Controls.Add(this.Window_Title);
             this.ControlBar.Controls.Add(this.Window_Icon);
             this.ControlBar.Location = new System.Drawing.Point(0, 0);
@@ -51,16 +54,38 @@
             this.ControlBar.Size = new System.Drawing.Size(350, 40);
             this.ControlBar.TabIndex = 0;
             // 
+            // Window_Close
+            // 
+            this.Window_Close.BackgroundImage = global::Cynobroad.Properties.Resources.close;
+            this.Window_Close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Window_Close.Location = new System.Drawing.Point(321, 4);
+            this.Window_Close.Margin = new System.Windows.Forms.Padding(4);
+            this.Window_Close.Name = "Window_Close";
+            this.Window_Close.Size = new System.Drawing.Size(25, 25);
+            this.Window_Close.TabIndex = 2;
+            this.Window_Close.TabStop = false;
+            this.Window_Close.Click += new System.EventHandler(this.Window_Close_Click);
+            // 
             // Window_Title
             // 
             this.Window_Title.AutoSize = true;
-            this.Window_Title.Font = new System.Drawing.Font("Trebuchet MS", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Window_Title.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Window_Title.ForeColor = System.Drawing.Color.Silver;
-            this.Window_Title.Location = new System.Drawing.Point(35, 6);
+            this.Window_Title.Location = new System.Drawing.Point(35, 8);
             this.Window_Title.Name = "Window_Title";
-            this.Window_Title.Size = new System.Drawing.Size(125, 20);
+            this.Window_Title.Size = new System.Drawing.Size(111, 18);
             this.Window_Title.TabIndex = 1;
             this.Window_Title.Text = "Cynobroad Login";
+            // 
+            // Window_Icon
+            // 
+            this.Window_Icon.BackgroundImage = global::Cynobroad.Properties.Resources.sdp_ico;
+            this.Window_Icon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Window_Icon.Location = new System.Drawing.Point(4, 4);
+            this.Window_Icon.Name = "Window_Icon";
+            this.Window_Icon.Size = new System.Drawing.Size(25, 25);
+            this.Window_Icon.TabIndex = 0;
+            this.Window_Icon.TabStop = false;
             // 
             // Label_Username
             // 
@@ -80,7 +105,7 @@
             this.Label_Password.Name = "Label_Password";
             this.Label_Password.Size = new System.Drawing.Size(66, 18);
             this.Label_Password.TabIndex = 2;
-            this.Label_Password.Text = "Password:";
+            this.Label_Password.Text = "Server IP:";
             // 
             // Input_Username
             // 
@@ -91,15 +116,15 @@
             this.Input_Username.Size = new System.Drawing.Size(194, 20);
             this.Input_Username.TabIndex = 3;
             // 
-            // Input_Password
+            // Input_ServerIP
             // 
-            this.Input_Password.Location = new System.Drawing.Point(112, 90);
-            this.Input_Password.Margin = new System.Windows.Forms.Padding(3, 3, 35, 3);
-            this.Input_Password.MaxLength = 512;
-            this.Input_Password.Name = "Input_Password";
-            this.Input_Password.PasswordChar = '*';
-            this.Input_Password.Size = new System.Drawing.Size(194, 20);
-            this.Input_Password.TabIndex = 4;
+            this.Input_ServerIP.Location = new System.Drawing.Point(112, 90);
+            this.Input_ServerIP.Margin = new System.Windows.Forms.Padding(3, 3, 35, 3);
+            this.Input_ServerIP.MaxLength = 512;
+            this.Input_ServerIP.Name = "Input_ServerIP";
+            this.Input_ServerIP.PasswordChar = '*';
+            this.Input_ServerIP.Size = new System.Drawing.Size(194, 20);
+            this.Input_ServerIP.TabIndex = 4;
             // 
             // Accept
             // 
@@ -112,23 +137,13 @@
             this.Accept.UseVisualStyleBackColor = true;
             this.Accept.Click += new System.EventHandler(this.Accept_Click);
             // 
-            // Window_Icon
-            // 
-            this.Window_Icon.BackgroundImage = global::Cynobroad.Properties.Resources.sdp_ico;
-            this.Window_Icon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Window_Icon.Location = new System.Drawing.Point(4, 4);
-            this.Window_Icon.Name = "Window_Icon";
-            this.Window_Icon.Size = new System.Drawing.Size(25, 25);
-            this.Window_Icon.TabIndex = 0;
-            this.Window_Icon.TabStop = false;
-            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(350, 150);
             this.Controls.Add(this.Accept);
-            this.Controls.Add(this.Input_Password);
+            this.Controls.Add(this.Input_ServerIP);
             this.Controls.Add(this.Input_Username);
             this.Controls.Add(this.Label_Password);
             this.Controls.Add(this.Label_Username);
@@ -140,6 +155,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Login_FormClosing);
             this.ControlBar.ResumeLayout(false);
             this.ControlBar.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Window_Close)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Icon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -154,7 +170,8 @@
         private System.Windows.Forms.Label Label_Username;
         private System.Windows.Forms.Label Label_Password;
         private System.Windows.Forms.TextBox Input_Username;
-        private System.Windows.Forms.TextBox Input_Password;
+        private System.Windows.Forms.TextBox Input_ServerIP;
         private System.Windows.Forms.Button Accept;
+        private System.Windows.Forms.PictureBox Window_Close;
     }
 }

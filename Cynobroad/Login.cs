@@ -13,11 +13,17 @@ namespace Cynobroad
     public partial class Login : Form
     {
         private string username = "";
+        private string serverIP = "";
         private bool verifiedAccept = false;
 
         public string Username
         {
             get { return username; }
+        }
+
+        public string ServerIP
+        {
+            get { return serverIP; }
         }
 
         public Login()
@@ -28,6 +34,7 @@ namespace Cynobroad
         private void Accept_Click(object sender, EventArgs e)
         {
             username = Input_Username.Text.Trim();
+            serverIP = Input_ServerIP.Text.Trim();
 
             if (string.IsNullOrEmpty(username))
             {
@@ -36,13 +43,18 @@ namespace Cynobroad
             }
 
             verifiedAccept = true;
-            this.Hide();
+            Close();
         }
 
         private void Login_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!verifiedAccept)
                 username = "";
+        }
+
+        private void Window_Close_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynobroad", "Cynobroad\Cynobroad.csproj", "{648A6357-2D31-4670-B16E-5A39C4E5C880}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynobroad TCP Server", "Cynobroad TCP Server\Cynobroad TCP Server.csproj", "{F546A847-656E-4AB1-A80A-442937E2D9B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{648A6357-2D31-4670-B16E-5A39C4E5C880}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{648A6357-2D31-4670-B16E-5A39C4E5C880}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{648A6357-2D31-4670-B16E-5A39C4E5C880}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F546A847-656E-4AB1-A80A-442937E2D9B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F546A847-656E-4AB1-A80A-442937E2D9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F546A847-656E-4AB1-A80A-442937E2D9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F546A847-656E-4AB1-A80A-442937E2D9B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

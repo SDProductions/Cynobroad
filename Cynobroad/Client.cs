@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -15,17 +17,23 @@ namespace Cynobroad
 {
     public partial class Client : Form
     {
-        const int port = 42069;
-        const string broadcastAddress = "255.255.255.255";
+        private string username;
+        private int port = 42069;
+        private string serverIP = "";
 
-        UdpClient receivingClient;
-        UdpClient sendingClient;
+        private Thread receivingThread;
+        private Thread sendingThread;
+        private TcpClient _client = new TcpClient();
+        private StreamReader _sReader;
+        private StreamWriter _sWriter;
 
-        Thread receivingThread;
+        private ConcurrentQueue<string> messageQueue;
+        public ConcurrentQueue<string> MessageQueue
+        {
+            get { return messageQueue; }
+        }
 
         delegate void AddMsg(string msg);
-
-        string username;
 
         public Client()
         {
@@ -40,74 +48,85 @@ namespace Cynobroad
             {
                 login.ShowDialog();
 
-                if (login.Username == "")
+                if (login.Username == "" || login.ServerIP == "")
                 {
                     this.Close();
                 }
                 else
                 {
                     username = login.Username;
+                    serverIP = login.ServerIP;
                     this.Show();
                 }
-
-                SendMsgBox.Focus();
-
-                InitializeSender();
-                InitializeReceiver();
             }
-        }
 
-        private void InitializeSender()
-        {
-            sendingClient = new UdpClient(broadcastAddress, port)
-            {
-                EnableBroadcast = true
-            };
-        }
-
-        private void InitializeReceiver()
-        {
-            receivingClient = new UdpClient(port);
-
-            ThreadStart start = new ThreadStart(Receiver);
-            receivingThread = new Thread(start)
-            {
-                IsBackground = true
-            };
-            receivingThread.Start();
-        }
-
-        private void Send_Click(object sender, EventArgs e)
-        {
-            SendMsgBox.Text = SendMsgBox.Text.TrimEnd();
-
-            if (!string.IsNullOrEmpty(SendMsgBox.Text))
-            {
-                string toSend = username + ":\n" + SendMsgBox.Text;
-                byte[] data = Encoding.ASCII.GetBytes(toSend);
-                sendingClient.Send(data, data.Length);
-                SendMsgBox.Text = "";
-            }
+            InitializeConnection();
 
             SendMsgBox.Focus();
         }
 
-        private void Receiver()
+        private void InitializeConnection()
         {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, port);
-            AddMsg msgDelegate = MessageReceived;
+            _client.Connect(serverIP, port);
+            _sWriter = new StreamWriter(_client.GetStream(), Encoding.ASCII);
+            _sReader = new StreamReader(_client.GetStream(), Encoding.ASCII);
+
+            messageQueue = new ConcurrentQueue<string>();
+
+            ThreadStart startReceiver = new ThreadStart(HandleReceiver);
+            receivingThread = new Thread(startReceiver);
+            receivingThread.IsBackground = true;
+            receivingThread.Start();
+
+            ThreadStart startSender = new ThreadStart(HandleSender);
+            sendingThread = new Thread(startSender);
+            sendingThread.IsBackground = true;
+            sendingThread.Start();
+        }
+
+        private void HandleReceiver()
+        {
+            AddMsg addMsg = MessageReceived;
+
+            _sWriter.WriteLine($"join://{username}");
+            _sWriter.Flush();
 
             while (true)
             {
-                byte[] data = receivingClient.Receive(ref endPoint);
-                string msg = Encoding.ASCII.GetString(data);
-                Invoke(msgDelegate, msg);
+                string readString = _sReader.ReadLine();
+                Invoke(addMsg, readString);
+            }
+        }
+
+        private void HandleSender()
+        {
+            while (true)
+            {
+                if (!MessageQueue.IsEmpty)
+                {
+                    foreach (string msg in MessageQueue)
+                    {
+                        MessageQueue.TryDequeue(out string str);
+                        _sWriter.WriteLine(msg);
+                        _sWriter.Flush();
+                    }
+                }
             }
         }
 
         private void MessageReceived(string msg)
         {
             ChatDisplay.Text += msg + "\n";
+        }
+
+        private void Send_Click(object sender, EventArgs e)
+        {
+            SendMsgBox.Text = SendMsgBox.Text.TrimEnd();
+
+            messageQueue.Enqueue("send://" + SendMsgBox.Text);
+
+            SendMsgBox.Text = "";
+            SendMsgBox.Focus();
         }
     }
 }

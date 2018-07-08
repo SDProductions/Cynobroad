@@ -30,22 +30,38 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Client));
             this.ControlBar = new System.Windows.Forms.Panel();
+            this.Window_Title = new System.Windows.Forms.Label();
             this.Window_Icon = new System.Windows.Forms.PictureBox();
             this.ChatDisplay = new System.Windows.Forms.RichTextBox();
             this.SendMsgBox = new System.Windows.Forms.TextBox();
             this.Send = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ControlBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Icon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // ControlBar
             // 
             this.ControlBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(25)))), ((int)(((byte)(35)))));
+            this.ControlBar.Controls.Add(this.pictureBox1);
+            this.ControlBar.Controls.Add(this.Window_Title);
             this.ControlBar.Controls.Add(this.Window_Icon);
             this.ControlBar.Location = new System.Drawing.Point(0, 0);
             this.ControlBar.Name = "ControlBar";
             this.ControlBar.Size = new System.Drawing.Size(640, 40);
             this.ControlBar.TabIndex = 0;
+            // 
+            // Window_Title
+            // 
+            this.Window_Title.AutoSize = true;
+            this.Window_Title.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Window_Title.ForeColor = System.Drawing.Color.Silver;
+            this.Window_Title.Location = new System.Drawing.Point(35, 8);
+            this.Window_Title.Name = "Window_Title";
+            this.Window_Title.Size = new System.Drawing.Size(114, 18);
+            this.Window_Title.TabIndex = 1;
+            this.Window_Title.Text = "Cynobroad Client";
             // 
             // Window_Icon
             // 
@@ -87,6 +103,16 @@
             this.Send.UseVisualStyleBackColor = true;
             this.Send.Click += new System.EventHandler(this.Send_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::Cynobroad.Properties.Resources.close;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox1.Location = new System.Drawing.Point(612, 4);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -102,7 +128,9 @@
             this.Text = "Cynobroad Client";
             this.Load += new System.EventHandler(this.Client_Load);
             this.ControlBar.ResumeLayout(false);
+            this.ControlBar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Icon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -115,6 +143,8 @@
         private System.Windows.Forms.RichTextBox ChatDisplay;
         private System.Windows.Forms.TextBox SendMsgBox;
         private System.Windows.Forms.Button Send;
+        private System.Windows.Forms.Label Window_Title;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
