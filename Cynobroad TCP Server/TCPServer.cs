@@ -41,7 +41,7 @@ namespace Cynobroad_TCP_Server
             {
                 // wait for client connection
                 TcpClient newClient = _server.AcceptTcpClient();
-                Console.WriteLine("Connected.");
+                Console.WriteLine("Connection accepted from " + newClient.Client.RemoteEndPoint);
 
                 // create a thread to handle communication
                 Thread t = new Thread(new ParameterizedThreadStart(HandleSender));
@@ -81,8 +81,9 @@ namespace Cynobroad_TCP_Server
             StreamReader sReader = (StreamReader)obj;
 
             String sData = null;
+            Boolean isConnected = true;
 
-            while (true)
+            while (isConnected)
             {
                 sData = sReader.ReadLine();
                 Console.WriteLine(sData);
@@ -90,16 +91,22 @@ namespace Cynobroad_TCP_Server
                 if (sData.StartsWith("join://"))
                 {
                     sData = sData.Substring(7);
-                    sData = $"send://{sData} has joined the network.";
+                    MessageQueue.Enqueue($"{sData} has joined the network.");
                 }
-                if (sData.StartsWith("close://"))
+                else if (sData.StartsWith("close://"))
                 {
-                    
+                    sData = sData.Substring(7);
+                    MessageQueue.Enqueue($"{sData} has left the network.");
+                    break;
                 }
-                if (sData.StartsWith("send://"))
+                else if (sData.StartsWith("send://"))
                 {
                     sData = sData.Substring(7);
                     MessageQueue.Enqueue(sData);
+                }
+                else
+                {
+                    break;
                 }
             }
         }

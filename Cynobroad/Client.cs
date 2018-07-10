@@ -27,7 +27,7 @@ namespace Cynobroad
         private StreamReader _sReader;
         private StreamWriter _sWriter;
 
-        private ConcurrentQueue<string> messageQueue;
+        private ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
         public ConcurrentQueue<string> MessageQueue
         {
             get { return messageQueue; }
@@ -48,7 +48,7 @@ namespace Cynobroad
             {
                 login.ShowDialog();
 
-                if (login.Username == "" || login.ServerIP == "")
+                if (string.IsNullOrEmpty(login.Username) || string.IsNullOrEmpty(login.ServerIP))
                 {
                     this.Close();
                 }
@@ -57,12 +57,12 @@ namespace Cynobroad
                     username = login.Username;
                     serverIP = login.ServerIP;
                     this.Show();
+
+                    InitializeConnection();
+
+                    SendMsgBox.Focus();
                 }
             }
-
-            InitializeConnection();
-
-            SendMsgBox.Focus();
         }
 
         private void InitializeConnection()
@@ -119,11 +119,38 @@ namespace Cynobroad
             ChatDisplay.Text += msg + "\n";
         }
 
+        private void Button_MouseEnter(object sender, EventArgs e)
+        {
+            Control button = (Control)sender;
+            button.BackColor = Color.FromArgb(30, 35, 45);
+        }
+
+        private void Button_MouseLeave(object sender, EventArgs e)
+        {
+            Control button = (Control)sender;
+            button.BackColor = Color.FromArgb(20, 25, 35);
+        }
+
+        private void Window_Minimize_Click(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Minimized;
+        }
+
+        private void Window_Close_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void Client_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            messageQueue.Enqueue("close://" + username);
+        }
+
         private void Send_Click(object sender, EventArgs e)
         {
             SendMsgBox.Text = SendMsgBox.Text.TrimEnd();
 
-            messageQueue.Enqueue("send://" + SendMsgBox.Text);
+            messageQueue.Enqueue($"send://{username}: {SendMsgBox.Text}");
 
             SendMsgBox.Text = "";
             SendMsgBox.Focus();
