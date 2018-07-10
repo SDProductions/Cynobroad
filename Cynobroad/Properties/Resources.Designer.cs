@@ -85,7 +85,7 @@ namespace Cynobroad.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap sdp_ico {
             get {
-                object obj = ResourceManager.GetObject("sdp-ico", resourceCulture);
+                object obj = ResourceManager.GetObject("sdp_ico", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

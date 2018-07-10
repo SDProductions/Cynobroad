@@ -37,6 +37,7 @@
             this.Window_Close = new System.Windows.Forms.PictureBox();
             this.Window_Icon = new System.Windows.Forms.PictureBox();
             this.ChatDisplay = new System.Windows.Forms.RichTextBox();
+            this.UserInfoSummary = new System.Windows.Forms.Panel();
             this.ControlBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Close)).BeginInit();
@@ -69,17 +70,17 @@
             // SendMsgBox
             // 
             this.SendMsgBox.Font = new System.Drawing.Font("Trebuchet MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SendMsgBox.Location = new System.Drawing.Point(12, 450);
+            this.SendMsgBox.Location = new System.Drawing.Point(10, 450);
             this.SendMsgBox.Name = "SendMsgBox";
-            this.SendMsgBox.Size = new System.Drawing.Size(404, 25);
+            this.SendMsgBox.Size = new System.Drawing.Size(415, 25);
             this.SendMsgBox.TabIndex = 2;
             // 
             // Send
             // 
             this.Send.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Send.Location = new System.Drawing.Point(423, 450);
+            this.Send.Location = new System.Drawing.Point(424, 450);
             this.Send.Name = "Send";
-            this.Send.Size = new System.Drawing.Size(69, 25);
+            this.Send.Size = new System.Drawing.Size(66, 25);
             this.Send.TabIndex = 3;
             this.Send.Text = "Send";
             this.Send.UseVisualStyleBackColor = true;
@@ -125,18 +126,28 @@
             // 
             this.ChatDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ChatDisplay.Font = new System.Drawing.Font("Trebuchet MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChatDisplay.Location = new System.Drawing.Point(12, 60);
+            this.ChatDisplay.Location = new System.Drawing.Point(10, 60);
             this.ChatDisplay.Name = "ChatDisplay";
             this.ChatDisplay.ReadOnly = true;
             this.ChatDisplay.Size = new System.Drawing.Size(480, 370);
             this.ChatDisplay.TabIndex = 4;
             this.ChatDisplay.Text = "";
             // 
+            // UserInfoSummary
+            // 
+            this.UserInfoSummary.BackColor = System.Drawing.SystemColors.Control;
+            this.UserInfoSummary.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.UserInfoSummary.Location = new System.Drawing.Point(496, 60);
+            this.UserInfoSummary.Name = "UserInfoSummary";
+            this.UserInfoSummary.Size = new System.Drawing.Size(195, 70);
+            this.UserInfoSummary.TabIndex = 5;
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(700, 500);
+            this.Controls.Add(this.UserInfoSummary);
             this.Controls.Add(this.ChatDisplay);
             this.Controls.Add(this.Send);
             this.Controls.Add(this.SendMsgBox);
@@ -167,6 +178,7 @@
         private System.Windows.Forms.PictureBox Window_Close;
         private System.Windows.Forms.PictureBox Window_Minimize;
         private System.Windows.Forms.RichTextBox ChatDisplay;
+        private System.Windows.Forms.Panel UserInfoSummary;
     }
 }
 

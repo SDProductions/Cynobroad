@@ -22,6 +22,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <SupportUrl>https://github.com/SDProductions/Cynobroad</SupportUrl>
+    <ErrorReportUrl>https://github.com/SDProductions/Cynobroad</ErrorReportUrl>
+    <ProductName>Cynobroad</ProductName>
+    <PublisherName>SDProductions</PublisherName>
     <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
@@ -48,16 +52,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>CA70092C1C1AFBC5591EFB3B9BB111DD3F9D63BD</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>787A71554B7184357FA38E80593DDB6EE9DCA946</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Cynobroad_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Cynobroad_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

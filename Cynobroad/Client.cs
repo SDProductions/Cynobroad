@@ -44,6 +44,11 @@ namespace Cynobroad
         {
             Hide();
 
+            Rectangle screenRes = Screen.PrimaryScreen.Bounds;
+            float scaleFactor = Height / screenRes.Height * 1080;
+            SizeF scale = new SizeF(scaleFactor, scaleFactor);
+            Scale(scale);
+
             using (Login login = new Login())
             {
                 login.ShowDialog();
@@ -74,13 +79,17 @@ namespace Cynobroad
             messageQueue = new ConcurrentQueue<string>();
 
             ThreadStart startReceiver = new ThreadStart(HandleReceiver);
-            receivingThread = new Thread(startReceiver);
-            receivingThread.IsBackground = true;
+            receivingThread = new Thread(startReceiver)
+            {
+                IsBackground = true
+            };
             receivingThread.Start();
 
             ThreadStart startSender = new ThreadStart(HandleSender);
-            sendingThread = new Thread(startSender);
-            sendingThread.IsBackground = true;
+            sendingThread = new Thread(startSender)
+            {
+                IsBackground = true
+            };
             sendingThread.Start();
         }
 

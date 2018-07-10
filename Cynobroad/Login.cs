@@ -31,6 +31,14 @@ namespace Cynobroad
             InitializeComponent();
         }
 
+        private void Login_Load(object sender, EventArgs e)
+        {
+            Rectangle screenRes = Screen.PrimaryScreen.Bounds;
+            float scaleFactor = Height / screenRes.Height * 1080;
+            SizeF scale = new SizeF(scaleFactor, scaleFactor);
+            Scale(scale);
+        }
+
         private void Accept_Click(object sender, EventArgs e)
         {
             username = Input_Username.Text.Trim();
