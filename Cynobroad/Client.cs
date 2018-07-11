@@ -23,15 +23,20 @@ namespace Cynobroad
 
         private Thread receivingThread;
         private Thread sendingThread;
-        private TcpClient _client = new TcpClient();
+        private TcpClient _client;
         private StreamReader _sReader;
         private StreamWriter _sWriter;
+
+        private bool isConnected;
 
         private ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
         public ConcurrentQueue<string> MessageQueue
         {
             get { return messageQueue; }
         }
+
+        private bool mouseDown;
+        private Point lastLocation;
 
         delegate void AddMsg(string msg);
 
@@ -61,12 +66,33 @@ namespace Cynobroad
                 {
                     username = login.Username;
                     serverIP = login.ServerIP;
+
+                    User_UsernameLabel.Text = username;
+                    User_ConnectedServer.Text = serverIP;
                     this.Show();
 
-                    InitializeConnection();
+                    try
+                    {
+                        _client = new TcpClient();
+                        InitializeConnection();
+                        isConnected = true;
+                    }
+                    catch
+                    {
+                        isConnected = false;
+                    }
 
                     SendMsgBox.Focus();
                 }
+            }
+
+            if (!isConnected)
+            {
+                User_ConnectionStatus.BackColor = Color.OrangeRed;
+            }
+            else
+            {
+                User_ConnectionStatus.BackColor = Color.LawnGreen;
             }
         }
 
@@ -128,10 +154,31 @@ namespace Cynobroad
             ChatDisplay.Text += msg + "\n";
         }
 
+        private void Window_ControlBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            lastLocation = e.Location;
+        }
+
+        private void Window_ControlBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+        private void Window_ControlBar_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point((Location.X - lastLocation.X) + e.X,
+                                          (Location.Y - lastLocation.Y) + e.Y);
+                this.Update();
+            }
+        }
+
         private void Button_MouseEnter(object sender, EventArgs e)
         {
             Control button = (Control)sender;
-            button.BackColor = Color.FromArgb(30, 35, 45);
+            button.BackColor = Color.FromArgb(40, 45, 55);
         }
 
         private void Button_MouseLeave(object sender, EventArgs e)
@@ -153,6 +200,47 @@ namespace Cynobroad
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {
             messageQueue.Enqueue("close://" + username);
+        }
+
+        private void Button_SignOut_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            messageQueue.Enqueue("close://" + username);
+            Thread.Sleep(10);
+            _client.Close();
+
+            Client_Load(sender, e);
+        }
+
+        private void Button_Reconnect_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                InitializeConnection();
+                isConnected = true;
+            }
+            catch
+            {
+                isConnected = false;
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                User_ConnectionStatus.BackColor = Color.Gold;
+                Update();
+                Thread.Sleep(500);
+                User_ConnectionStatus.BackColor = Color.FromArgb(224, 224, 244);
+                Update();
+                Thread.Sleep(500);
+            }
+
+            if (!isConnected)
+            {
+                User_ConnectionStatus.BackColor = Color.OrangeRed;
+            }
+            else
+            {
+                User_ConnectionStatus.BackColor = Color.LawnGreen;
+            }
         }
 
         private void Send_Click(object sender, EventArgs e)

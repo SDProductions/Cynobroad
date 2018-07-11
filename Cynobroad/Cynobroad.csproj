@@ -86,16 +86,31 @@
     <Compile Include="Client.Designer.cs">
       <DependentUpon>Client.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConnectedUserBlock.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ConnectedUserBlock.Designer.cs">
+      <DependentUpon>ConnectedUserBlock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
+    <Compile Include="MessageBlock.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MessageBlock.Designer.cs">
+      <DependentUpon>MessageBlock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Client.resx">
       <DependentUpon>Client.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConnectedUserBlock.resx">
+      <DependentUpon>ConnectedUserBlock.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>

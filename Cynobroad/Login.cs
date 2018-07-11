@@ -16,6 +16,9 @@ namespace Cynobroad
         private string serverIP = "";
         private bool verifiedAccept = false;
 
+        private bool mouseDown;
+        private Point lastLocation;
+
         public string Username
         {
             get { return username; }
@@ -39,6 +42,55 @@ namespace Cynobroad
             Scale(scale);
         }
 
+        private void ControlBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            lastLocation = e.Location;
+        }
+
+        private void ControlBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+        private void ControlBar_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                this.Location = new Point((Location.X - lastLocation.X) + e.X,
+                                          (Location.Y - lastLocation.Y) + e.Y);
+                this.Update();
+            }
+        }
+
+        private void Button_MouseEnter(object sender, EventArgs e)
+        {
+            Control obj = (Control)sender;
+            obj.BackColor = Color.FromArgb(40, 45, 55);
+        }
+
+        private void Button_MouseLeave(object sender, EventArgs e)
+        {
+            Control obj = (Control)sender;
+            obj.BackColor = Color.FromArgb(20, 25, 35);
+        }
+
+        private void Input_Username_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue == 13)
+            {
+                Input_ServerIP.Focus();
+            }
+        }
+
+        private void Input_ServerIP_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue == 13)
+            {
+                Accept_Click(sender, e);
+            }
+        }
+
         private void Accept_Click(object sender, EventArgs e)
         {
             username = Input_Username.Text.Trim();
@@ -46,7 +98,12 @@ namespace Cynobroad
 
             if (string.IsNullOrEmpty(username))
             {
-                MessageBox.Show("Username must be up to 32 characters and cannot be null.");
+                MessageBox.Show("Username must be up to 24 characters and cannot be null.");
+                return;
+            }
+            if (string.IsNullOrEmpty(serverIP) || !serverIP.Contains("."))
+            {
+                MessageBox.Show("Please specify an IPv4 server address.");
                 return;
             }
 

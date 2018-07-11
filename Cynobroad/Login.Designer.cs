@@ -53,6 +53,9 @@
             this.ControlBar.Name = "ControlBar";
             this.ControlBar.Size = new System.Drawing.Size(350, 40);
             this.ControlBar.TabIndex = 0;
+            this.ControlBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ControlBar_MouseDown);
+            this.ControlBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ControlBar_MouseMove);
+            this.ControlBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ControlBar_MouseUp);
             // 
             // Window_Title
             // 
@@ -87,26 +90,30 @@
             // 
             // Input_Username
             // 
+            this.Input_Username.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Input_Username.Location = new System.Drawing.Point(112, 60);
             this.Input_Username.Margin = new System.Windows.Forms.Padding(3, 3, 35, 3);
-            this.Input_Username.MaxLength = 32;
+            this.Input_Username.MaxLength = 24;
             this.Input_Username.Name = "Input_Username";
             this.Input_Username.Size = new System.Drawing.Size(194, 20);
             this.Input_Username.TabIndex = 3;
+            this.Input_Username.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Input_Username_KeyDown);
             // 
             // Input_ServerIP
             // 
+            this.Input_ServerIP.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Input_ServerIP.Location = new System.Drawing.Point(112, 90);
             this.Input_ServerIP.Margin = new System.Windows.Forms.Padding(3, 3, 35, 3);
             this.Input_ServerIP.MaxLength = 512;
             this.Input_ServerIP.Name = "Input_ServerIP";
-            this.Input_ServerIP.PasswordChar = '*';
             this.Input_ServerIP.Size = new System.Drawing.Size(194, 20);
             this.Input_ServerIP.TabIndex = 4;
+            this.Input_ServerIP.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Input_ServerIP_KeyDown);
             // 
             // Accept
             // 
             this.Accept.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Accept.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Accept.Location = new System.Drawing.Point(231, 116);
             this.Accept.Name = "Accept";
             this.Accept.Size = new System.Drawing.Size(75, 23);
@@ -126,10 +133,12 @@
             this.Window_Close.TabIndex = 2;
             this.Window_Close.TabStop = false;
             this.Window_Close.Click += new System.EventHandler(this.Window_Close_Click);
+            this.Window_Close.MouseEnter += new System.EventHandler(this.Button_MouseEnter);
+            this.Window_Close.MouseLeave += new System.EventHandler(this.Button_MouseLeave);
             // 
             // Window_Icon
             // 
-            this.Window_Icon.BackgroundImage = global::Cynobroad.Properties.Resources.sdp_ico;
+            this.Window_Icon.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Window_Icon.BackgroundImage")));
             this.Window_Icon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Window_Icon.Location = new System.Drawing.Point(4, 4);
             this.Window_Icon.Name = "Window_Icon";

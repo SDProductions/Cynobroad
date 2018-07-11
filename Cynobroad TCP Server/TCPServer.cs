@@ -16,6 +16,7 @@ namespace Cynobroad_TCP_Server
         private TcpListener _server;
         private Boolean _isRunning;
 
+        private List<string> connectedUsers;
         private ConcurrentQueue<string> messageQueue;
 
         public ConcurrentQueue<string> MessageQueue
@@ -92,11 +93,14 @@ namespace Cynobroad_TCP_Server
                 {
                     sData = sData.Substring(7);
                     MessageQueue.Enqueue($"{sData} has joined the network.");
+                    connectedUsers.Add(sData);
                 }
                 else if (sData.StartsWith("close://"))
                 {
                     sData = sData.Substring(7);
                     MessageQueue.Enqueue($"{sData} has left the network.");
+                    if (connectedUsers.Contains(sData))
+                        connectedUsers.Remove(sData);
                     break;
                 }
                 else if (sData.StartsWith("send://"))
@@ -109,11 +113,6 @@ namespace Cynobroad_TCP_Server
                     break;
                 }
             }
-        }
-
-        private void AddMsg(string msg)
-        {
-            messageQueue.Enqueue(msg);
         }
     }
 }
