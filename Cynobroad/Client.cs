@@ -129,7 +129,22 @@ namespace Cynobroad
             while (true)
             {
                 string readString = _sReader.ReadLine();
-                Invoke(addMsg, readString);
+                if (readString.StartsWith("post://"))
+                {
+                    readString = readString.Substring(7);
+                    if (readString.StartsWith("join."))
+                    {
+                        readString = readString.Substring(5);
+                    }
+                    else if (readString.StartsWith("close."))
+                    {
+                        readString = readString.Substring(5);
+                    }
+                }
+                else
+                {
+                    Invoke(addMsg, readString);
+                }
             }
         }
 

@@ -36,9 +36,9 @@
             // User_OnlineStatus
             // 
             this.User_OnlineStatus.BackColor = System.Drawing.Color.LawnGreen;
-            this.User_OnlineStatus.Location = new System.Drawing.Point(3, 3);
+            this.User_OnlineStatus.Location = new System.Drawing.Point(0, 0);
             this.User_OnlineStatus.Name = "User_OnlineStatus";
-            this.User_OnlineStatus.Size = new System.Drawing.Size(20, 20);
+            this.User_OnlineStatus.Size = new System.Drawing.Size(8, 25);
             this.User_OnlineStatus.TabIndex = 0;
             this.User_OnlineStatus.TabStop = false;
             // 
@@ -46,7 +46,7 @@
             // 
             this.User_Username.AutoSize = true;
             this.User_Username.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.User_Username.Location = new System.Drawing.Point(29, 5);
+            this.User_Username.Location = new System.Drawing.Point(16, 4);
             this.User_Username.Name = "User_Username";
             this.User_Username.Size = new System.Drawing.Size(65, 16);
             this.User_Username.TabIndex = 1;

@@ -47,7 +47,6 @@
             this.User_ConnectedServer = new System.Windows.Forms.Label();
             this.Panel_ConnectedUsersList = new System.Windows.Forms.Panel();
             this.Label_ConnectedUsers = new System.Windows.Forms.Label();
-            this.connectedUserBlock1 = new Cynobroad.ConnectedUserBlock();
             this.Window_ControlBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Close)).BeginInit();
@@ -249,7 +248,6 @@
             // Panel_ConnectedUsersList
             // 
             this.Panel_ConnectedUsersList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.Panel_ConnectedUsersList.Controls.Add(this.connectedUserBlock1);
             this.Panel_ConnectedUsersList.Controls.Add(this.Label_ConnectedUsers);
             this.Panel_ConnectedUsersList.Location = new System.Drawing.Point(595, 110);
             this.Panel_ConnectedUsersList.Margin = new System.Windows.Forms.Padding(0);
@@ -266,13 +264,6 @@
             this.Label_ConnectedUsers.Size = new System.Drawing.Size(88, 13);
             this.Label_ConnectedUsers.TabIndex = 7;
             this.Label_ConnectedUsers.Text = "connected users:";
-            // 
-            // connectedUserBlock1
-            // 
-            this.connectedUserBlock1.Location = new System.Drawing.Point(0, 20);
-            this.connectedUserBlock1.Name = "connectedUserBlock1";
-            this.connectedUserBlock1.Size = new System.Drawing.Size(205, 25);
-            this.connectedUserBlock1.TabIndex = 8;
             // 
             // Client
             // 
@@ -327,7 +318,6 @@
         internal System.Windows.Forms.Panel Panel_InfoSummary;
         internal System.Windows.Forms.Panel Panel_ConnectedUsersList;
         private System.Windows.Forms.Label Label_ConnectedUsers;
-        private ConnectedUserBlock connectedUserBlock1;
     }
 }
 

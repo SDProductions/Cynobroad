@@ -94,6 +94,7 @@ namespace Cynobroad_TCP_Server
                     sData = sData.Substring(7);
                     MessageQueue.Enqueue($"{sData} has joined the network.");
                     connectedUsers.Add(sData);
+                    MessageQueue.Enqueue($"post://join.{sData}");
                 }
                 else if (sData.StartsWith("close://"))
                 {
@@ -101,6 +102,7 @@ namespace Cynobroad_TCP_Server
                     MessageQueue.Enqueue($"{sData} has left the network.");
                     if (connectedUsers.Contains(sData))
                         connectedUsers.Remove(sData);
+                    MessageQueue.Enqueue($"post://close.{sData}");
                     break;
                 }
                 else if (sData.StartsWith("send://"))
