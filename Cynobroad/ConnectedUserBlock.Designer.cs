@@ -68,7 +68,7 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox User_OnlineStatus;
-        private System.Windows.Forms.Label User_Username;
+        internal System.Windows.Forms.PictureBox User_OnlineStatus;
+        internal System.Windows.Forms.Label User_Username;
     }
 }

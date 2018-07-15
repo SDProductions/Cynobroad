@@ -16,9 +16,13 @@ namespace Cynobroad_TCP_Server
         private TcpListener _server;
         private Boolean _isRunning;
 
-        private List<string> connectedUsers;
-        private ConcurrentQueue<string> messageQueue;
+        private List<string> connectedUsers = new List<string>();
+        public List<string> ConnectedUsers
+        {
+            get { return connectedUsers; }
+        }
 
+        private ConcurrentQueue<string> messageQueue;
         public ConcurrentQueue<string> MessageQueue
         {
             get { return messageQueue; }
@@ -57,10 +61,9 @@ namespace Cynobroad_TCP_Server
 
             // sets two streams for in/out
             StreamWriter sWriter = new StreamWriter(client.GetStream(), Encoding.ASCII);
-            StreamReader sReader = new StreamReader(client.GetStream(), Encoding.ASCII);
 
             Thread receiveThread = new Thread(new ParameterizedThreadStart(HandleReceiver));
-            receiveThread.Start(sReader);
+            receiveThread.Start(client);
 
             while (true)
             {
@@ -74,12 +77,19 @@ namespace Cynobroad_TCP_Server
                         MessageQueue.TryDequeue(out string str);
                     }
                 }
+
+                if (!client.Connected)
+                {
+                    break;
+                }
             }
         }
 
         public void HandleReceiver(object obj)
         {
-            StreamReader sReader = (StreamReader)obj;
+            TcpClient client = (TcpClient)obj;
+
+            StreamReader sReader = new StreamReader(client.GetStream(), Encoding.ASCII);
 
             String sData = null;
             Boolean isConnected = true;
@@ -93,16 +103,19 @@ namespace Cynobroad_TCP_Server
                 {
                     sData = sData.Substring(7);
                     MessageQueue.Enqueue($"{sData} has joined the network.");
-                    connectedUsers.Add(sData);
-                    MessageQueue.Enqueue($"post://join.{sData}");
+
+                    ConnectedUsers.Add(sData);
+                    MessageQueue.Enqueue($"post://updateusers");
                 }
                 else if (sData.StartsWith("close://"))
                 {
-                    sData = sData.Substring(7);
+                    sData = sData.Substring(8);
                     MessageQueue.Enqueue($"{sData} has left the network.");
-                    if (connectedUsers.Contains(sData))
-                        connectedUsers.Remove(sData);
-                    MessageQueue.Enqueue($"post://close.{sData}");
+
+                    if (ConnectedUsers.Contains(sData))
+                        ConnectedUsers.Remove(sData);
+                    MessageQueue.Enqueue($"post://updateusers");
+                    client.Dispose();
                     break;
                 }
                 else if (sData.StartsWith("send://"))
@@ -112,6 +125,7 @@ namespace Cynobroad_TCP_Server
                 }
                 else
                 {
+                    client.Dispose();
                     break;
                 }
             }

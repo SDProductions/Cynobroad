@@ -101,6 +101,11 @@ namespace Cynobroad
                 MessageBox.Show("Username must be up to 24 characters and cannot be null.");
                 return;
             }
+            if (username.Contains("|"))
+            {
+                MessageBox.Show("Character '|' is forbidden within the username.");
+                return;
+            }
             if (string.IsNullOrEmpty(serverIP) || !serverIP.Contains("."))
             {
                 MessageBox.Show("Please specify an IPv4 server address.");

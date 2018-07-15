@@ -27,8 +27,9 @@ namespace Cynobroad
         private StreamReader _sReader;
         private StreamWriter _sWriter;
 
-        private bool isConnected;
+        private bool isConnected = false;
 
+        private List<string> connectedUsers = new List<string>();
         private ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
         public ConcurrentQueue<string> MessageQueue
         {
@@ -39,6 +40,8 @@ namespace Cynobroad
         private Point lastLocation;
 
         delegate void AddMsg(string msg);
+        delegate void AddUserBlock(ConnectedUserBlock userBlock);
+        delegate void RemoveUserBlock(ConnectedUserBlock userBlock);
 
         public Client()
         {
@@ -132,14 +135,6 @@ namespace Cynobroad
                 if (readString.StartsWith("post://"))
                 {
                     readString = readString.Substring(7);
-                    if (readString.StartsWith("join."))
-                    {
-                        readString = readString.Substring(5);
-                    }
-                    else if (readString.StartsWith("close."))
-                    {
-                        readString = readString.Substring(5);
-                    }
                 }
                 else
                 {
@@ -167,6 +162,16 @@ namespace Cynobroad
         private void MessageReceived(string msg)
         {
             ChatDisplay.Text += msg + "\n";
+        }
+
+        private void AddUser(ConnectedUserBlock userBlock)
+        {
+            Panel_ConnectedUsersList.Controls.Add(userBlock);
+        }
+
+        private void RemoveUser(ConnectedUserBlock userBlock)
+        {
+            Panel_ConnectedUsersList.Controls.Remove(userBlock);
         }
 
         private void Window_ControlBar_MouseDown(object sender, MouseEventArgs e)

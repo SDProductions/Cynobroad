@@ -71,6 +71,8 @@ namespace Cynobroad_Console
                 sData = sReader.ReadLine();
                 if (!sData.StartsWith($"{username}:"))
                     Console.WriteLine(sData);
+                else if (sData.StartsWith("post://"))
+                    ;
                 else
                 {
                     Console.SetCursorPosition(0, Console.CursorTop - 1);
