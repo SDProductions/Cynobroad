@@ -54,7 +54,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.User_ConnectionStatus)).BeginInit();
             this.Panel_InfoSummary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.Panel_ConnectedUsersList.SuspendLayout();
             this.SuspendLayout();
             // 
             // Window_ControlBar
@@ -212,6 +211,7 @@
             // Panel_InfoSummary
             // 
             this.Panel_InfoSummary.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.Panel_InfoSummary.Controls.Add(this.Label_ConnectedUsers);
             this.Panel_InfoSummary.Controls.Add(this.pictureBox1);
             this.Panel_InfoSummary.Controls.Add(this.User_ConnectedServer);
             this.Panel_InfoSummary.Controls.Add(this.Button_Reconnect);
@@ -222,7 +222,7 @@
             this.Panel_InfoSummary.Location = new System.Drawing.Point(595, 40);
             this.Panel_InfoSummary.Margin = new System.Windows.Forms.Padding(0);
             this.Panel_InfoSummary.Name = "Panel_InfoSummary";
-            this.Panel_InfoSummary.Size = new System.Drawing.Size(205, 70);
+            this.Panel_InfoSummary.Size = new System.Drawing.Size(205, 86);
             this.Panel_InfoSummary.TabIndex = 5;
             // 
             // pictureBox1
@@ -248,18 +248,17 @@
             // Panel_ConnectedUsersList
             // 
             this.Panel_ConnectedUsersList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.Panel_ConnectedUsersList.Controls.Add(this.Label_ConnectedUsers);
-            this.Panel_ConnectedUsersList.Location = new System.Drawing.Point(595, 110);
+            this.Panel_ConnectedUsersList.Location = new System.Drawing.Point(595, 125);
             this.Panel_ConnectedUsersList.Margin = new System.Windows.Forms.Padding(0);
             this.Panel_ConnectedUsersList.Name = "Panel_ConnectedUsersList";
-            this.Panel_ConnectedUsersList.Size = new System.Drawing.Size(205, 390);
+            this.Panel_ConnectedUsersList.Size = new System.Drawing.Size(205, 375);
             this.Panel_ConnectedUsersList.TabIndex = 13;
             // 
             // Label_ConnectedUsers
             // 
             this.Label_ConnectedUsers.AutoSize = true;
             this.Label_ConnectedUsers.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_ConnectedUsers.Location = new System.Drawing.Point(3, 6);
+            this.Label_ConnectedUsers.Location = new System.Drawing.Point(3, 73);
             this.Label_ConnectedUsers.Name = "Label_ConnectedUsers";
             this.Label_ConnectedUsers.Size = new System.Drawing.Size(88, 13);
             this.Label_ConnectedUsers.TabIndex = 7;
@@ -291,8 +290,6 @@
             this.Panel_InfoSummary.ResumeLayout(false);
             this.Panel_InfoSummary.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.Panel_ConnectedUsersList.ResumeLayout(false);
-            this.Panel_ConnectedUsersList.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

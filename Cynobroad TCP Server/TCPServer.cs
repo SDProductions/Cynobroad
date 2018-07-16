@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -85,10 +86,12 @@ namespace Cynobroad_TCP_Server
             }
         }
 
-        public void HandleReceiver(object obj)
+        public void HandleReceiver(object _client)
         {
-            TcpClient client = (TcpClient)obj;
+            TcpClient client = (TcpClient)_client;
 
+
+            BinaryFormatter formatter = new BinaryFormatter();
             StreamReader sReader = new StreamReader(client.GetStream(), Encoding.ASCII);
 
             String sData = null;
@@ -105,7 +108,9 @@ namespace Cynobroad_TCP_Server
                     MessageQueue.Enqueue($"{sData} has joined the network.");
 
                     ConnectedUsers.Add(sData);
+
                     MessageQueue.Enqueue($"post://updateusers");
+                    formatter.Serialize(client.GetStream(), ConnectedUsers);
                 }
                 else if (sData.StartsWith("close://"))
                 {
@@ -114,7 +119,10 @@ namespace Cynobroad_TCP_Server
 
                     if (ConnectedUsers.Contains(sData))
                         ConnectedUsers.Remove(sData);
+
                     MessageQueue.Enqueue($"post://updateusers");
+                    formatter.Serialize(client.GetStream(), ConnectedUsers);
+                    
                     client.Dispose();
                     break;
                 }

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,31 +18,42 @@ namespace Cynobroad
 {
     public partial class Client : Form
     {
+        //Connection info
         private string username;
         private int port = 42069;
         private string serverIP = "";
 
+        //Connection handlers
         private Thread receivingThread;
         private Thread sendingThread;
         private TcpClient _client;
         private StreamReader _sReader;
         private StreamWriter _sWriter;
-
         private bool isConnected = false;
-
+        
         private List<string> connectedUsers = new List<string>();
+        public List<string> ConnectedUsers
+        {
+            get { return connectedUsers; }
+            set { connectedUsers = value; }
+        }
+
+        //Messages to send
         private ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
         public ConcurrentQueue<string> MessageQueue
         {
             get { return messageQueue; }
+            set { messageQueue = value; }
         }
 
+        //Window tools
         private bool mouseDown;
         private Point lastLocation;
 
+        //Threadsafe calls
         delegate void AddMsg(string msg);
-        delegate void AddUserBlock(ConnectedUserBlock userBlock);
-        delegate void RemoveUserBlock(ConnectedUserBlock userBlock);
+        delegate void AddUserBlock(ConnectedUserBlock control);
+        delegate void RemoveAllUserBlocks();
 
         public Client()
         {
@@ -52,11 +64,13 @@ namespace Cynobroad
         {
             Hide();
 
+            //Scale window
             Rectangle screenRes = Screen.PrimaryScreen.Bounds;
             float scaleFactor = Height / screenRes.Height * 1080;
             SizeF scale = new SizeF(scaleFactor, scaleFactor);
             Scale(scale);
-
+            
+            //Get login info and try connecting
             using (Login login = new Login())
             {
                 login.ShowDialog();
@@ -124,17 +138,39 @@ namespace Cynobroad
 
         private void HandleReceiver()
         {
+            BinaryFormatter formatter = new BinaryFormatter();
+
             AddMsg addMsg = MessageReceived;
+            AddUserBlock addUser = AddUser;
+            RemoveAllUserBlocks clearUsers = RemoveAllUsers;
 
             _sWriter.WriteLine($"join://{username}");
             _sWriter.Flush();
 
-            while (true)
+            while (isConnected)
             {
                 string readString = _sReader.ReadLine();
                 if (readString.StartsWith("post://"))
                 {
                     readString = readString.Substring(7);
+                    if (readString.StartsWith("updateusers"))
+                    {
+                        ConnectedUsers = (List<string>)formatter.Deserialize(_client.GetStream());
+                        ConnectedUsers.Sort();
+
+                        Invoke(clearUsers);
+
+                        int yOffset = 0;
+                        foreach (string user in ConnectedUsers)
+                        {
+                            var newUserBlock = new ConnectedUserBlock();
+                            newUserBlock.User_Username.Text = user;
+                            newUserBlock.Location = new Point(0, yOffset);
+                            yOffset += 25;
+
+                            Invoke(addUser, newUserBlock);
+                        }
+                    }
                 }
                 else
                 {
@@ -145,7 +181,7 @@ namespace Cynobroad
 
         private void HandleSender()
         {
-            while (true)
+            while (isConnected)
             {
                 if (!MessageQueue.IsEmpty)
                 {
@@ -169,9 +205,9 @@ namespace Cynobroad
             Panel_ConnectedUsersList.Controls.Add(userBlock);
         }
 
-        private void RemoveUser(ConnectedUserBlock userBlock)
+        private void RemoveAllUsers()
         {
-            Panel_ConnectedUsersList.Controls.Remove(userBlock);
+            Panel_ConnectedUsersList.Controls.Clear();
         }
 
         private void Window_ControlBar_MouseDown(object sender, MouseEventArgs e)
