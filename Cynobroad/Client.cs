@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Cynobroad
@@ -32,11 +26,6 @@ namespace Cynobroad
         private bool isConnected = false;
         
         private List<string> connectedUsers = new List<string>();
-        public List<string> ConnectedUsers
-        {
-            get { return connectedUsers; }
-            set { connectedUsers = value; }
-        }
 
         //Messages to send
         private ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
@@ -86,19 +75,19 @@ namespace Cynobroad
 
                     User_UsernameLabel.Text = username;
                     User_ConnectedServer.Text = serverIP;
-                    this.Show();
-
+                    
                     try
                     {
                         _client = new TcpClient();
-                        InitializeConnection();
                         isConnected = true;
+                        InitializeConnection();
                     }
                     catch
                     {
                         isConnected = false;
                     }
 
+                    this.Show();
                     SendMsgBox.Focus();
                 }
             }
@@ -114,8 +103,7 @@ namespace Cynobroad
         }
 
         private void InitializeConnection()
-        {
-            _client.Connect(serverIP, port);
+        {_client.Connect(serverIP, port);
             _sWriter = new StreamWriter(_client.GetStream(), Encoding.ASCII);
             _sReader = new StreamReader(_client.GetStream(), Encoding.ASCII);
 
@@ -138,8 +126,6 @@ namespace Cynobroad
 
         private void HandleReceiver()
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-
             AddMsg addMsg = MessageReceived;
             AddUserBlock addUser = AddUser;
             RemoveAllUserBlocks clearUsers = RemoveAllUsers;
@@ -153,19 +139,24 @@ namespace Cynobroad
                 if (readString.StartsWith("post://"))
                 {
                     readString = readString.Substring(7);
-                    if (readString.StartsWith("updateusers"))
+                    if (readString.StartsWith("rcu"))
                     {
-                        ConnectedUsers = (List<string>)formatter.Deserialize(_client.GetStream());
-                        ConnectedUsers.Sort();
+                        Invoke(clearUsers);
+                        connectedUsers = new List<string>();
+                    }
+                    else if (readString.StartsWith("acu."))
+                    {
+                        readString = readString.Substring(4);
 
                         Invoke(clearUsers);
+                        connectedUsers.Add(readString);
 
                         int yOffset = 0;
-                        foreach (string user in ConnectedUsers)
+                        foreach (string user in connectedUsers)
                         {
                             var newUserBlock = new ConnectedUserBlock();
                             newUserBlock.User_Username.Text = user;
-                            newUserBlock.Location = new Point(0, yOffset);
+                            newUserBlock.Location = new Point(0, 5 + yOffset);
                             yOffset += 25;
 
                             Invoke(addUser, newUserBlock);
@@ -207,7 +198,8 @@ namespace Cynobroad
 
         private void RemoveAllUsers()
         {
-            Panel_ConnectedUsersList.Controls.Clear();
+            while (Panel_ConnectedUsersList.Controls.Count > 0)
+                Panel_ConnectedUsersList.Controls[0].Dispose();
         }
 
         private void Window_ControlBar_MouseDown(object sender, MouseEventArgs e)
@@ -262,6 +254,7 @@ namespace Cynobroad
         {
             messageQueue.Enqueue("close://" + username);
             Thread.Sleep(10);
+            isConnected = false;
             _client.Close();
 
             Client_Load(sender, e);
@@ -297,6 +290,12 @@ namespace Cynobroad
             {
                 User_ConnectionStatus.BackColor = Color.LawnGreen;
             }
+        }
+
+        private void SendMsgBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\n')
+                Send_Click(sender, e);
         }
 
         private void Send_Click(object sender, EventArgs e)

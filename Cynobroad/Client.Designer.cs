@@ -125,6 +125,7 @@
             this.SendMsgBox.Name = "SendMsgBox";
             this.SendMsgBox.Size = new System.Drawing.Size(522, 25);
             this.SendMsgBox.TabIndex = 2;
+            this.SendMsgBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SendMsgBox_KeyPress);
             // 
             // Send
             // 
