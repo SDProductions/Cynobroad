@@ -103,7 +103,8 @@ namespace Cynobroad
         }
 
         private void InitializeConnection()
-        {_client.Connect(serverIP, port);
+        {
+            _client.Connect(serverIP, port);
             _sWriter = new StreamWriter(_client.GetStream(), Encoding.ASCII);
             _sReader = new StreamReader(_client.GetStream(), Encoding.ASCII);
 
@@ -267,7 +268,17 @@ namespace Cynobroad
                 InitializeConnection();
                 isConnected = true;
             }
+            catch (SocketException) { }
             catch
+            {
+                isConnected = false;
+            }
+
+            if (_client.Connected)
+            {
+                isConnected = true;
+            }
+            else
             {
                 isConnected = false;
             }
@@ -292,10 +303,12 @@ namespace Cynobroad
             }
         }
 
-        private void SendMsgBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void SendMsgBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyChar == '\n')
+            if (e.KeyValue == 13)
+            {
                 Send_Click(sender, e);
+            }
         }
 
         private void Send_Click(object sender, EventArgs e)

@@ -43,10 +43,10 @@
             this.Button_SignOut = new System.Windows.Forms.LinkLabel();
             this.Button_Reconnect = new System.Windows.Forms.LinkLabel();
             this.Panel_InfoSummary = new System.Windows.Forms.Panel();
+            this.Label_ConnectedUsers = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.User_ConnectedServer = new System.Windows.Forms.Label();
             this.Panel_ConnectedUsersList = new System.Windows.Forms.Panel();
-            this.Label_ConnectedUsers = new System.Windows.Forms.Label();
             this.Window_ControlBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Close)).BeginInit();
@@ -125,7 +125,7 @@
             this.SendMsgBox.Name = "SendMsgBox";
             this.SendMsgBox.Size = new System.Drawing.Size(522, 25);
             this.SendMsgBox.TabIndex = 2;
-            this.SendMsgBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SendMsgBox_KeyPress);
+            this.SendMsgBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SendMsgBox_KeyDown);
             // 
             // Send
             // 
@@ -226,6 +226,16 @@
             this.Panel_InfoSummary.Size = new System.Drawing.Size(205, 86);
             this.Panel_InfoSummary.TabIndex = 5;
             // 
+            // Label_ConnectedUsers
+            // 
+            this.Label_ConnectedUsers.AutoSize = true;
+            this.Label_ConnectedUsers.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_ConnectedUsers.Location = new System.Drawing.Point(3, 73);
+            this.Label_ConnectedUsers.Name = "Label_ConnectedUsers";
+            this.Label_ConnectedUsers.Size = new System.Drawing.Size(88, 13);
+            this.Label_ConnectedUsers.TabIndex = 7;
+            this.Label_ConnectedUsers.Text = "connected users:";
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlDark;
@@ -254,16 +264,6 @@
             this.Panel_ConnectedUsersList.Name = "Panel_ConnectedUsersList";
             this.Panel_ConnectedUsersList.Size = new System.Drawing.Size(205, 375);
             this.Panel_ConnectedUsersList.TabIndex = 13;
-            // 
-            // Label_ConnectedUsers
-            // 
-            this.Label_ConnectedUsers.AutoSize = true;
-            this.Label_ConnectedUsers.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_ConnectedUsers.Location = new System.Drawing.Point(3, 73);
-            this.Label_ConnectedUsers.Name = "Label_ConnectedUsers";
-            this.Label_ConnectedUsers.Size = new System.Drawing.Size(88, 13);
-            this.Label_ConnectedUsers.TabIndex = 7;
-            this.Label_ConnectedUsers.Text = "connected users:";
             // 
             // Client
             // 
