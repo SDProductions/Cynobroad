@@ -315,6 +315,13 @@ namespace Cynobroad
         {
             SendMsgBox.Text = SendMsgBox.Text.TrimEnd();
 
+            if (SendMsgBox.Text.Length > 1024)
+            {
+                MessageBox.Show("Woah woah woah! Your bytes are simply too much for our stingy network hamsters. " +
+                                "We've limited each message to 1024 characters. Like Twitter, but not as bad.");
+                return;
+            }
+
             messageQueue.Enqueue($"send://{username}: {SendMsgBox.Text}");
 
             SendMsgBox.Text = "";

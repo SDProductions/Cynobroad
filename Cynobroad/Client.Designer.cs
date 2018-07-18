@@ -38,7 +38,6 @@
             this.Send = new System.Windows.Forms.Button();
             this.ChatDisplay = new System.Windows.Forms.RichTextBox();
             this.Label_SignedInAs = new System.Windows.Forms.Label();
-            this.User_ConnectionStatus = new System.Windows.Forms.PictureBox();
             this.User_UsernameLabel = new System.Windows.Forms.Label();
             this.Button_SignOut = new System.Windows.Forms.LinkLabel();
             this.Button_Reconnect = new System.Windows.Forms.LinkLabel();
@@ -46,14 +45,15 @@
             this.Label_ConnectedUsers = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.User_ConnectedServer = new System.Windows.Forms.Label();
+            this.User_ConnectionStatus = new System.Windows.Forms.PictureBox();
             this.Panel_ConnectedUsersList = new System.Windows.Forms.Panel();
             this.Window_ControlBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Close)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Icon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.User_ConnectionStatus)).BeginInit();
             this.Panel_InfoSummary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.User_ConnectionStatus)).BeginInit();
             this.SuspendLayout();
             // 
             // Window_ControlBar
@@ -145,7 +145,7 @@
             this.ChatDisplay.Location = new System.Drawing.Point(4, 46);
             this.ChatDisplay.Name = "ChatDisplay";
             this.ChatDisplay.ReadOnly = true;
-            this.ChatDisplay.Size = new System.Drawing.Size(585, 380);
+            this.ChatDisplay.Size = new System.Drawing.Size(585, 379);
             this.ChatDisplay.TabIndex = 4;
             this.ChatDisplay.Text = "";
             // 
@@ -158,16 +158,6 @@
             this.Label_SignedInAs.Size = new System.Drawing.Size(65, 13);
             this.Label_SignedInAs.TabIndex = 7;
             this.Label_SignedInAs.Text = "signed in as:";
-            // 
-            // User_ConnectionStatus
-            // 
-            this.User_ConnectionStatus.BackColor = System.Drawing.Color.Gold;
-            this.User_ConnectionStatus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.User_ConnectionStatus.Location = new System.Drawing.Point(200, 0);
-            this.User_ConnectionStatus.Name = "User_ConnectionStatus";
-            this.User_ConnectionStatus.Size = new System.Drawing.Size(5, 70);
-            this.User_ConnectionStatus.TabIndex = 6;
-            this.User_ConnectionStatus.TabStop = false;
             // 
             // User_UsernameLabel
             // 
@@ -256,6 +246,16 @@
             this.User_ConnectedServer.TabIndex = 11;
             this.User_ConnectedServer.Text = "192.168.0.1";
             // 
+            // User_ConnectionStatus
+            // 
+            this.User_ConnectionStatus.BackColor = System.Drawing.Color.Gold;
+            this.User_ConnectionStatus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.User_ConnectionStatus.Location = new System.Drawing.Point(200, 0);
+            this.User_ConnectionStatus.Name = "User_ConnectionStatus";
+            this.User_ConnectionStatus.Size = new System.Drawing.Size(5, 70);
+            this.User_ConnectionStatus.TabIndex = 6;
+            this.User_ConnectionStatus.TabStop = false;
+            // 
             // Panel_ConnectedUsersList
             // 
             this.Panel_ConnectedUsersList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -287,10 +287,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.Window_Minimize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Close)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Icon)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.User_ConnectionStatus)).EndInit();
             this.Panel_InfoSummary.ResumeLayout(false);
             this.Panel_InfoSummary.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.User_ConnectionStatus)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
