@@ -63,7 +63,7 @@ namespace Cynobroad_TCP_Server
             Thread receiveThread = new Thread(new ParameterizedThreadStart(HandleReceiver));
             receiveThread.Start(client);
 
-            while (true)
+            while (client.Connected)
             {
                 if (!MessageQueue.IsEmpty)
                 {
@@ -75,11 +75,7 @@ namespace Cynobroad_TCP_Server
                         MessageQueue.TryDequeue(out string str);
                     }
                 }
-
-                if (!client.Connected)
-                {
-                    break;
-                }
+                Thread.Sleep(10);
             }
         }
 
@@ -100,7 +96,7 @@ namespace Cynobroad_TCP_Server
                 if (sData.StartsWith("join://"))
                 {
                     sData = sData.Substring(7);
-                    MessageQueue.Enqueue($"{sData} has joined the network.");
+                    MessageQueue.Enqueue($"SERVER>{sData} has joined the network.");
 
                     ConnectedUsers.Add(sData);
                     ConnectedUsers.Sort();
@@ -114,7 +110,7 @@ namespace Cynobroad_TCP_Server
                 else if (sData.StartsWith("close://"))
                 {
                     sData = sData.Substring(8);
-                    MessageQueue.Enqueue($"{sData} has left the network.");
+                    MessageQueue.Enqueue($"SERVER>{sData} has left the network.");
 
                     if (ConnectedUsers.Contains(sData))
                         ConnectedUsers.Remove(sData);

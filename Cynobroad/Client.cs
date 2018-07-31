@@ -40,7 +40,7 @@ namespace Cynobroad
         private Point lastLocation;
 
         //Threadsafe calls
-        delegate void AddMsg(string msg);
+        delegate void AddRichMsg(string msg);
         delegate void AddUserBlock(ConnectedUserBlock control);
         delegate void RemoveAllUserBlocks();
 
@@ -127,7 +127,7 @@ namespace Cynobroad
 
         private void HandleReceiver()
         {
-            AddMsg addMsg = MessageReceived;
+            AddRichMsg addRichMsg = RichMessageReceived;
             AddUserBlock addUser = AddUser;
             RemoveAllUserBlocks clearUsers = RemoveAllUsers;
 
@@ -137,6 +137,12 @@ namespace Cynobroad
             while (isConnected)
             {
                 string readString = _sReader.ReadLine();
+
+                if (readString == null)
+                {
+                    readString = "";
+                }
+
                 if (readString.StartsWith("post://"))
                 {
                     readString = readString.Substring(7);
@@ -166,7 +172,7 @@ namespace Cynobroad
                 }
                 else
                 {
-                    Invoke(addMsg, readString);
+                    Invoke(addRichMsg, readString);
                 }
             }
         }
@@ -179,17 +185,43 @@ namespace Cynobroad
                 {
                     foreach (string msg in MessageQueue)
                     {
-                        MessageQueue.TryDequeue(out string str);
+                        messageQueue.TryDequeue(out string str);
                         _sWriter.WriteLine(msg);
                         _sWriter.Flush();
                     }
                 }
+                Thread.Sleep(10);
             }
         }
 
-        private void MessageReceived(string msg)
+        private void RichMessageReceived(string msg)
         {
-            ChatDisplay.Text += msg + "\n";
+            if (string.IsNullOrEmpty(msg))
+            {
+                return;
+            }
+
+            string[] data = msg.Split('>');
+            string username = data[0];
+            msg = msg.Remove(0, username.Length + 1);
+
+            var newMSGBlock = new MessageBlock();
+            newMSGBlock.Block_User.Text = username;
+            newMSGBlock.Block_Message.Text = msg;
+
+            if (Panel_Messages.Controls.Count == 0)
+            {
+                newMSGBlock.Location = new Point(0, 0);
+            }
+            else
+            {
+                Control lastMSG = Panel_Messages.Controls[Panel_Messages.Controls.Count - 1];
+                int nextYPos = lastMSG.Location.Y + lastMSG.Height;
+                newMSGBlock.Location = new Point(0, nextYPos);
+            }
+            Panel_Messages.Controls.Add(newMSGBlock);
+            Panel_Messages.VerticalScroll.Value = Panel_Messages.VerticalScroll.Maximum;
+            Panel_Messages.Update();
         }
 
         private void AddUser(ConnectedUserBlock userBlock)
@@ -317,12 +349,16 @@ namespace Cynobroad
 
             if (SendMsgBox.Text.Length > 1024)
             {
-                MessageBox.Show("Woah woah woah! Your bytes are simply too much for our stingy network hamsters. " +
+                MessageBox.Show("Woah woah woah! Our stingy network hamsters simply don't want to deal with all your bytes. " +
                                 "We've limited each message to 1024 characters. Like Twitter, but not as bad.");
                 return;
             }
+            if (string.IsNullOrEmpty(SendMsgBox.Text))
+            {
+                return;
+            }
 
-            messageQueue.Enqueue($"send://{username}: {SendMsgBox.Text}");
+            messageQueue.Enqueue($"send://{username}>{SendMsgBox.Text}");
 
             SendMsgBox.Text = "";
             SendMsgBox.Focus();

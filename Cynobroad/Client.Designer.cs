@@ -36,7 +36,6 @@
             this.Window_Icon = new System.Windows.Forms.PictureBox();
             this.SendMsgBox = new System.Windows.Forms.TextBox();
             this.Send = new System.Windows.Forms.Button();
-            this.ChatDisplay = new System.Windows.Forms.RichTextBox();
             this.Label_SignedInAs = new System.Windows.Forms.Label();
             this.User_UsernameLabel = new System.Windows.Forms.Label();
             this.Button_SignOut = new System.Windows.Forms.LinkLabel();
@@ -47,6 +46,7 @@
             this.User_ConnectedServer = new System.Windows.Forms.Label();
             this.User_ConnectionStatus = new System.Windows.Forms.PictureBox();
             this.Panel_ConnectedUsersList = new System.Windows.Forms.Panel();
+            this.Panel_Messages = new System.Windows.Forms.Panel();
             this.Window_ControlBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Close)).BeginInit();
@@ -137,17 +137,6 @@
             this.Send.Text = "Send";
             this.Send.UseVisualStyleBackColor = true;
             this.Send.Click += new System.EventHandler(this.Send_Click);
-            // 
-            // ChatDisplay
-            // 
-            this.ChatDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ChatDisplay.Font = new System.Drawing.Font("Trebuchet MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChatDisplay.Location = new System.Drawing.Point(4, 46);
-            this.ChatDisplay.Name = "ChatDisplay";
-            this.ChatDisplay.ReadOnly = true;
-            this.ChatDisplay.Size = new System.Drawing.Size(585, 379);
-            this.ChatDisplay.TabIndex = 4;
-            this.ChatDisplay.Text = "";
             // 
             // Label_SignedInAs
             // 
@@ -265,14 +254,22 @@
             this.Panel_ConnectedUsersList.Size = new System.Drawing.Size(205, 375);
             this.Panel_ConnectedUsersList.TabIndex = 13;
             // 
+            // Panel_Messages
+            // 
+            this.Panel_Messages.AutoScroll = true;
+            this.Panel_Messages.Location = new System.Drawing.Point(4, 46);
+            this.Panel_Messages.Name = "Panel_Messages";
+            this.Panel_Messages.Size = new System.Drawing.Size(585, 398);
+            this.Panel_Messages.TabIndex = 14;
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 500);
+            this.Controls.Add(this.Panel_Messages);
             this.Controls.Add(this.Panel_ConnectedUsersList);
             this.Controls.Add(this.Panel_InfoSummary);
-            this.Controls.Add(this.ChatDisplay);
             this.Controls.Add(this.Send);
             this.Controls.Add(this.SendMsgBox);
             this.Controls.Add(this.Window_ControlBar);
@@ -305,7 +302,6 @@
         private System.Windows.Forms.Label Window_Title;
         private System.Windows.Forms.PictureBox Window_Close;
         private System.Windows.Forms.PictureBox Window_Minimize;
-        private System.Windows.Forms.RichTextBox ChatDisplay;
         private System.Windows.Forms.Label Label_SignedInAs;
         private System.Windows.Forms.Label User_UsernameLabel;
         private System.Windows.Forms.LinkLabel Button_SignOut;
@@ -316,6 +312,7 @@
         internal System.Windows.Forms.Panel Panel_InfoSummary;
         internal System.Windows.Forms.Panel Panel_ConnectedUsersList;
         private System.Windows.Forms.Label Label_ConnectedUsers;
+        private System.Windows.Forms.Panel Panel_Messages;
     }
 }
 

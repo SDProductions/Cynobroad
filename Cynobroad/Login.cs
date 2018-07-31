@@ -95,9 +95,9 @@ namespace Cynobroad
                 MessageBox.Show("Username must be up to 24 characters and cannot be null.");
                 return;
             }
-            if (username.Contains("|"))
+            if (username.Contains(">"))
             {
-                MessageBox.Show("Character '|' is forbidden within the username.");
+                MessageBox.Show("'>' is forbidden within the username.");
                 return;
             }
             if (string.IsNullOrEmpty(serverIP) || !serverIP.Contains("."))
