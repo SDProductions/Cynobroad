@@ -89,6 +89,12 @@
     <Compile Include="MessageBlock.Designer.cs">
       <DependentUpon>MessageBlock.cs</DependentUpon>
     </Compile>
+    <Compile Include="MessageBlockExtender.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MessageBlockExtender.Designer.cs">
+      <DependentUpon>MessageBlockExtender.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Client.resx">
@@ -102,6 +108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBlock.resx">
       <DependentUpon>MessageBlock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageBlockExtender.resx">
+      <DependentUpon>MessageBlockExtender.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

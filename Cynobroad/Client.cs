@@ -205,23 +205,40 @@ namespace Cynobroad
             string username = data[0];
             msg = msg.Remove(0, username.Length + 1);
 
-            var newMSGBlock = new MessageBlock();
-            newMSGBlock.Block_User.Text = username;
-            newMSGBlock.Block_Message.Text = msg;
-
-            if (Panel_Messages.Controls.Count == 0)
+            if (((MessageBlock)Panel_Messages.Controls[Panel_Messages.Controls.Count - 1]).Block_User.Text == username)
             {
-                newMSGBlock.Location = new Point(0, 0);
+                var newMSGExtender = new MessageBlockExtender();
+                newMSGExtender.Block_Message.Text = msg;
+
+                Control lastMSG = Panel_Messages.Controls[Panel_Messages.Controls.Count - 1];
+                int nextYPos = lastMSG.Location.Y + lastMSG.Height;
+                newMSGExtender.Location = new Point(0, nextYPos);
+
+                Panel_Messages.Controls.Add(newMSGExtender);
+                Panel_Messages.VerticalScroll.Value = Panel_Messages.VerticalScroll.Maximum;
+                Panel_Messages.Update();
             }
             else
             {
-                Control lastMSG = Panel_Messages.Controls[Panel_Messages.Controls.Count - 1];
-                int nextYPos = lastMSG.Location.Y + lastMSG.Height;
-                newMSGBlock.Location = new Point(0, nextYPos);
+                var newMSGBlock = new MessageBlock();
+                newMSGBlock.Block_User.Text = username;
+                newMSGBlock.Block_Message.Text = msg;
+
+                if (Panel_Messages.Controls.Count == 0)
+                {
+                    newMSGBlock.Location = new Point(0, 0);
+                }
+                else
+                {
+                    Control lastMSG = Panel_Messages.Controls[Panel_Messages.Controls.Count - 1];
+                    int nextYPos = lastMSG.Location.Y + lastMSG.Height;
+                    newMSGBlock.Location = new Point(0, nextYPos);
+                }
+
+                Panel_Messages.Controls.Add(newMSGBlock);
+                Panel_Messages.VerticalScroll.Value = Panel_Messages.VerticalScroll.Maximum;
+                Panel_Messages.Update();
             }
-            Panel_Messages.Controls.Add(newMSGBlock);
-            Panel_Messages.VerticalScroll.Value = Panel_Messages.VerticalScroll.Maximum;
-            Panel_Messages.Update();
         }
 
         private void AddUser(ConnectedUserBlock userBlock)
