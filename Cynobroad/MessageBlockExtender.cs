@@ -12,6 +12,8 @@ namespace Cynobroad
 {
     public partial class MessageBlockExtender : UserControl
     {
+        public string username;
+
         public MessageBlockExtender()
         {
             InitializeComponent();

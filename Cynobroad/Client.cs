@@ -205,10 +205,15 @@ namespace Cynobroad
             string username = data[0];
             msg = msg.Remove(0, username.Length + 1);
 
-            if (((MessageBlock)Panel_Messages.Controls[Panel_Messages.Controls.Count - 1]).Block_User.Text == username)
+            if (Panel_Messages.Controls.Count > 1 &&
+                ((Panel_Messages.Controls[Panel_Messages.Controls.Count - 1].GetType() == typeof(MessageBlock) &&
+                ((MessageBlock)Panel_Messages.Controls[Panel_Messages.Controls.Count - 1]).Block_User.Text == username) ||
+                Panel_Messages.Controls[Panel_Messages.Controls.Count - 1].GetType() == typeof(MessageBlockExtender) &&
+                ((MessageBlockExtender)Panel_Messages.Controls[Panel_Messages.Controls.Count - 1]).username == username))
             {
                 var newMSGExtender = new MessageBlockExtender();
                 newMSGExtender.Block_Message.Text = msg;
+                newMSGExtender.username = username;
 
                 Control lastMSG = Panel_Messages.Controls[Panel_Messages.Controls.Count - 1];
                 int nextYPos = lastMSG.Location.Y + lastMSG.Height;
@@ -357,6 +362,8 @@ namespace Cynobroad
             if (e.KeyValue == 13)
             {
                 Send_Click(sender, e);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
             }
         }
 
