@@ -10,14 +10,15 @@ namespace Cynobroad_Console
     class TCPClient
     {
         private const int port = 42069;
-        private string serverIP;
+        private readonly string serverIP;
 
-        private string username;
+        private readonly string username;
 
         private Thread receivingThread;
         private Thread sendingThread;
         private TcpClient _client;
-        
+        string sData = null;
+
         public TCPClient()
         {
             Console.WriteLine("Username:");
@@ -61,21 +62,21 @@ namespace Cynobroad_Console
             sendingThread = new Thread(new ParameterizedThreadStart(ClientSender));
             sendingThread.Start(_sWriter);
 
-            string sData = null;
-
             while (true)
             {
                 sData = sReader.ReadLine();
-                if (!sData.StartsWith($"{username}:"))
-                    Console.WriteLine(sData);
-                else if (sData.StartsWith("post://"))
-                    ;
-                else
+
+                if (sData != null && !sData.StartsWith("post://"))
                 {
-                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    string[] data = sData.Split('>');
+                    string username = data[0];
+                    sData = sData.Remove(0, username.Length + 1);
+                    
+                    if (username == this.username)
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
                     Console.Write(new string(' ', Console.WindowWidth));
                     Console.SetCursorPosition(0, Console.CursorTop - 1);
-                    Console.WriteLine(sData);
+                    Console.WriteLine(username + ": " + sData);
                 }
             }
         }
@@ -83,9 +84,7 @@ namespace Cynobroad_Console
         private void ClientSender(object obj)
         {
             StreamWriter sWriter = (StreamWriter)obj;
-
-            string sData = null;
-
+            
             while (true)
             {
                 sData = Console.ReadLine();
@@ -99,7 +98,7 @@ namespace Cynobroad_Console
                 }
                 else
                 {
-                    sWriter.WriteLine($"send://{username}: {sData}");
+                    sWriter.WriteLine($"send://{username}>{sData}");
                     sWriter.Flush();
                 }
             }

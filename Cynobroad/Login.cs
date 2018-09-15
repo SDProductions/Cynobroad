@@ -74,6 +74,8 @@ namespace Cynobroad
             if (e.KeyValue == 13)
             {
                 Input_ServerIP.Focus();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
             }
         }
 
@@ -82,6 +84,8 @@ namespace Cynobroad
             if (e.KeyValue == 13)
             {
                 Accept_Click(sender, e);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
             }
         }
 
