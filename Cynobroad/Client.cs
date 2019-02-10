@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -51,45 +52,42 @@ namespace Cynobroad
 
         private void Client_Load(object sender, EventArgs e)
         {
-            Hide();
-
-            //Scale window
-            Rectangle screenRes = Screen.PrimaryScreen.Bounds;
-            float scaleFactor = Height / screenRes.Height * 1080;
-            SizeF scale = new SizeF(scaleFactor, scaleFactor);
-            Scale(scale);
-            
             //Get login info and try connecting
             using (Login login = new Login())
             {
                 login.ShowDialog();
 
-                if (string.IsNullOrEmpty(login.Username) || string.IsNullOrEmpty(login.ServerIP))
-                {
+                if (string.IsNullOrEmpty(login.Username) && string.IsNullOrEmpty(login.ServerIP))
                     this.Close();
+                else if (login.IsSelfHost)
+                {
+                    SelfHoster.RunWorkerAsync();
+                    serverIP = Array.Find(Dns.GetHostEntry(string.Empty).AddressList,
+                                          a => a.AddressFamily == AddressFamily.InterNetwork).ToString();
+                    Window_Title.Text = $"Cynobroad Client - Local Server at {serverIP} on port 42069";
+                    
                 }
                 else
                 {
-                    username = login.Username;
                     serverIP = login.ServerIP;
-
-                    User_UsernameLabel.Text = username;
-                    User_ConnectedServer.Text = serverIP;
-                    
-                    try
-                    {
-                        _client = new TcpClient();
-                        isConnected = true;
-                        InitializeConnection();
-                    }
-                    catch
-                    {
-                        isConnected = false;
-                    }
-
-                    this.Show();
-                    SendMsgBox.Focus();
                 }
+
+                username = login.Username;
+                User_UsernameLabel.Text = username;
+                User_ConnectedServer.Text = serverIP;
+
+                try
+                {
+                    _client = new TcpClient();
+                    isConnected = true;
+                    InitializeConnection();
+                }
+                catch
+                {
+                    isConnected = false;
+                }
+
+                SendMsgBox.Focus();
             }
 
             if (!isConnected)
@@ -100,6 +98,11 @@ namespace Cynobroad
             {
                 User_ConnectionStatus.BackColor = Color.LawnGreen;
             }
+        }
+
+        private void SelfHoster_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            TCPServer server = new TCPServer(42069);
         }
 
         private void InitializeConnection()

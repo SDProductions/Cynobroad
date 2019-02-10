@@ -8,20 +8,20 @@ namespace Cynobroad
     {
         private string username = "";
         private string serverIP = "";
+        private bool isSelfHost = false;
         private bool verifiedAccept = false;
 
         private bool mouseDown;
         private Point lastLocation;
 
         public string Username
-        {
-            get { return username; }
-        }
+        { get { return username; } }
 
         public string ServerIP
-        {
-            get { return serverIP; }
-        }
+        { get { return serverIP; } }
+
+        public bool IsSelfHost
+        { get { return isSelfHost; } }
 
         public Login()
         {
@@ -104,7 +104,7 @@ namespace Cynobroad
                 MessageBox.Show("'>' is forbidden within the username.");
                 return;
             }
-            if (string.IsNullOrEmpty(serverIP) || !serverIP.Contains("."))
+            if ((string.IsNullOrEmpty(serverIP) || !serverIP.Contains(".")) && !isSelfHost)
             {
                 MessageBox.Show("Please specify an IPv4 server address.");
                 return;
@@ -123,6 +123,21 @@ namespace Cynobroad
         private void Window_Close_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void HostServerCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (HostServerCheck.Checked)
+            {
+                isSelfHost = true;
+                Input_ServerIP.ReadOnly = true;
+                Input_ServerIP.Text = "";
+            }
+            else
+            {
+                isSelfHost = false;
+                Input_ServerIP.ReadOnly = false;
+            }
         }
     }
 }

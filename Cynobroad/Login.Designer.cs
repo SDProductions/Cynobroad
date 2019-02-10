@@ -30,14 +30,15 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             this.ControlBar = new System.Windows.Forms.Panel();
+            this.Window_Close = new System.Windows.Forms.PictureBox();
             this.Window_Title = new System.Windows.Forms.Label();
+            this.Window_Icon = new System.Windows.Forms.PictureBox();
             this.Label_Username = new System.Windows.Forms.Label();
             this.Label_Password = new System.Windows.Forms.Label();
             this.Input_Username = new System.Windows.Forms.TextBox();
             this.Input_ServerIP = new System.Windows.Forms.TextBox();
             this.Accept = new System.Windows.Forms.Button();
-            this.Window_Close = new System.Windows.Forms.PictureBox();
-            this.Window_Icon = new System.Windows.Forms.PictureBox();
+            this.HostServerCheck = new System.Windows.Forms.CheckBox();
             this.ControlBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Close)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Icon)).BeginInit();
@@ -57,6 +58,20 @@
             this.ControlBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ControlBar_MouseMove);
             this.ControlBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ControlBar_MouseUp);
             // 
+            // Window_Close
+            // 
+            this.Window_Close.BackgroundImage = global::Cynobroad.Properties.Resources.close;
+            this.Window_Close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Window_Close.Location = new System.Drawing.Point(321, 4);
+            this.Window_Close.Margin = new System.Windows.Forms.Padding(4);
+            this.Window_Close.Name = "Window_Close";
+            this.Window_Close.Size = new System.Drawing.Size(25, 25);
+            this.Window_Close.TabIndex = 2;
+            this.Window_Close.TabStop = false;
+            this.Window_Close.Click += new System.EventHandler(this.Window_Close_Click);
+            this.Window_Close.MouseEnter += new System.EventHandler(this.Button_MouseEnter);
+            this.Window_Close.MouseLeave += new System.EventHandler(this.Button_MouseLeave);
+            // 
             // Window_Title
             // 
             this.Window_Title.AutoSize = true;
@@ -67,6 +82,16 @@
             this.Window_Title.Size = new System.Drawing.Size(111, 18);
             this.Window_Title.TabIndex = 1;
             this.Window_Title.Text = "Cynobroad Login";
+            // 
+            // Window_Icon
+            // 
+            this.Window_Icon.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Window_Icon.BackgroundImage")));
+            this.Window_Icon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Window_Icon.Location = new System.Drawing.Point(4, 4);
+            this.Window_Icon.Name = "Window_Icon";
+            this.Window_Icon.Size = new System.Drawing.Size(25, 25);
+            this.Window_Icon.TabIndex = 0;
+            this.Window_Icon.TabStop = false;
             // 
             // Label_Username
             // 
@@ -122,35 +147,24 @@
             this.Accept.UseVisualStyleBackColor = true;
             this.Accept.Click += new System.EventHandler(this.Accept_Click);
             // 
-            // Window_Close
+            // HostServerCheck
             // 
-            this.Window_Close.BackgroundImage = global::Cynobroad.Properties.Resources.close;
-            this.Window_Close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Window_Close.Location = new System.Drawing.Point(321, 4);
-            this.Window_Close.Margin = new System.Windows.Forms.Padding(4);
-            this.Window_Close.Name = "Window_Close";
-            this.Window_Close.Size = new System.Drawing.Size(25, 25);
-            this.Window_Close.TabIndex = 2;
-            this.Window_Close.TabStop = false;
-            this.Window_Close.Click += new System.EventHandler(this.Window_Close_Click);
-            this.Window_Close.MouseEnter += new System.EventHandler(this.Button_MouseEnter);
-            this.Window_Close.MouseLeave += new System.EventHandler(this.Button_MouseLeave);
-            // 
-            // Window_Icon
-            // 
-            this.Window_Icon.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Window_Icon.BackgroundImage")));
-            this.Window_Icon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Window_Icon.Location = new System.Drawing.Point(4, 4);
-            this.Window_Icon.Name = "Window_Icon";
-            this.Window_Icon.Size = new System.Drawing.Size(25, 25);
-            this.Window_Icon.TabIndex = 0;
-            this.Window_Icon.TabStop = false;
+            this.HostServerCheck.AutoSize = true;
+            this.HostServerCheck.Font = new System.Drawing.Font("Trebuchet MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HostServerCheck.Location = new System.Drawing.Point(38, 117);
+            this.HostServerCheck.Name = "HostServerCheck";
+            this.HostServerCheck.Size = new System.Drawing.Size(100, 22);
+            this.HostServerCheck.TabIndex = 6;
+            this.HostServerCheck.Text = "Host A Server";
+            this.HostServerCheck.UseVisualStyleBackColor = true;
+            this.HostServerCheck.CheckedChanged += new System.EventHandler(this.HostServerCheck_CheckedChanged);
             // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(350, 150);
+            this.Controls.Add(this.HostServerCheck);
             this.Controls.Add(this.Accept);
             this.Controls.Add(this.Input_ServerIP);
             this.Controls.Add(this.Input_Username);
@@ -183,5 +197,6 @@
         private System.Windows.Forms.TextBox Input_ServerIP;
         private System.Windows.Forms.Button Accept;
         private System.Windows.Forms.PictureBox Window_Close;
+        private System.Windows.Forms.CheckBox HostServerCheck;
     }
 }

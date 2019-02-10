@@ -38,6 +38,7 @@
             this.Block_Message.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Block_Message.Location = new System.Drawing.Point(53, 6);
             this.Block_Message.Name = "Block_Message";
+            this.Block_Message.ReadOnly = true;
             this.Block_Message.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
             this.Block_Message.Size = new System.Drawing.Size(480, 17);
             this.Block_Message.TabIndex = 4;

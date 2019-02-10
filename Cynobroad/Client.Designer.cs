@@ -47,6 +47,7 @@
             this.User_ConnectionStatus = new System.Windows.Forms.PictureBox();
             this.Panel_ConnectedUsersList = new System.Windows.Forms.Panel();
             this.Panel_Messages = new System.Windows.Forms.Panel();
+            this.SelfHoster = new System.ComponentModel.BackgroundWorker();
             this.Window_ControlBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Close)).BeginInit();
@@ -262,6 +263,10 @@
             this.Panel_Messages.Size = new System.Drawing.Size(585, 398);
             this.Panel_Messages.TabIndex = 14;
             // 
+            // SelfHoster
+            // 
+            this.SelfHoster.DoWork += new System.ComponentModel.DoWorkEventHandler(this.SelfHoster_DoWork);
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -313,6 +318,7 @@
         internal System.Windows.Forms.Panel Panel_ConnectedUsersList;
         private System.Windows.Forms.Label Label_ConnectedUsers;
         private System.Windows.Forms.Panel Panel_Messages;
+        private System.ComponentModel.BackgroundWorker SelfHoster;
     }
 }
 
