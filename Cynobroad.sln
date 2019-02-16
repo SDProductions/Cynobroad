@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynobroad", "Cynobroad\Cyno
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynobroad Console", "Cynobroad Console\Cynobroad Console.csproj", "{8E3C78B4-4302-4F64-A10C-84E9D84CA085}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynobroad TCP Server", "Cynobroad TCP Server\Cynobroad TCP Server.csproj", "{F546A847-656E-4AB1-A80A-442937E2D9B0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
