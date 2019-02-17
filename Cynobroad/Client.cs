@@ -82,10 +82,9 @@ namespace Cynobroad
                     isConnected = false;
                 }
 
+                Show();
                 SendMsgBox.Focus();
             }
-
-            Show();
 
             if (!isConnected)
                 User_ConnectionStatus.BackColor = Color.FromArgb(224, 102, 102);

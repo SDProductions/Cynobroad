@@ -19,14 +19,6 @@ namespace Cynobroad
             InitializeComponent();
         }
 
-        private void Login_Load(object sender, EventArgs e)
-        {
-            Rectangle screenRes = Screen.PrimaryScreen.Bounds;
-            float scaleFactor = Height / screenRes.Height * 1080;
-            SizeF scale = new SizeF(scaleFactor, scaleFactor);
-            Scale(scale);
-        }
-
         private void ControlBar_MouseDown(object sender, MouseEventArgs e)
         {
             mouseDown = true;
@@ -42,9 +34,9 @@ namespace Cynobroad
         {
             if (mouseDown)
             {
-                this.Location = new Point((Location.X - lastLocation.X) + e.X,
-                                          (Location.Y - lastLocation.Y) + e.Y);
-                this.Update();
+                Location = new Point((Location.X - lastLocation.X) + e.X,
+                                     (Location.Y - lastLocation.Y) + e.Y);
+                Update();
             }
         }
 
