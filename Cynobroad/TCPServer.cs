@@ -83,7 +83,9 @@ namespace Cynobroad
 
             while (isConnected)
             {
-                sData = sReader.ReadLine();
+                try
+                { sData = sReader.ReadLine(); }
+                catch { }
 
                 if (sData.StartsWith("join://"))
                 {

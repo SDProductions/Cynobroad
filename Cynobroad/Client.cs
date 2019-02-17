@@ -132,10 +132,12 @@ namespace Cynobroad
             _sWriter.WriteLine($"join://{username}");
             _sWriter.Flush();
 
+            string readString = "";
+
             //while connected, recieve messages and process them
             while (isConnected)
             {
-                string readString = _sReader.ReadLine();
+                readString = _sReader.ReadLine();
 
                 if (readString == null)
                     readString = "";
@@ -185,7 +187,11 @@ namespace Cynobroad
                     }
                 }
                 else
-                    Invoke(addRichMsg, readString);
+                {
+                    try { Invoke(addRichMsg, readString); }
+                    catch
+                    { break; }
+                }
             }
         }
 
@@ -235,8 +241,8 @@ namespace Cynobroad
 
                 //add the new message, and scroll down
                 Panel_Messages.Controls.Add(newMSGExtender);
-                Panel_Messages.Update();
                 Panel_Messages.VerticalScroll.Value = Panel_Messages.VerticalScroll.Maximum;
+                Update();
             }
             else
             {
@@ -258,8 +264,8 @@ namespace Cynobroad
 
                 //add, update panel, and scroll down
                 Panel_Messages.Controls.Add(newMSGBlock);
-                Panel_Messages.Update();
                 Panel_Messages.VerticalScroll.Value = Panel_Messages.VerticalScroll.Maximum;
+                Update();
             }
         }
 
