@@ -46,7 +46,7 @@
             // 
             // ControlBar
             // 
-            this.ControlBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(25)))), ((int)(((byte)(35)))));
+            this.ControlBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(57)))), ((int)(((byte)(83)))));
             this.ControlBar.Controls.Add(this.Window_Close);
             this.ControlBar.Controls.Add(this.Window_Title);
             this.ControlBar.Controls.Add(this.Window_Icon);
@@ -76,7 +76,7 @@
             // 
             this.Window_Title.AutoSize = true;
             this.Window_Title.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Window_Title.ForeColor = System.Drawing.Color.Silver;
+            this.Window_Title.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.Window_Title.Location = new System.Drawing.Point(35, 8);
             this.Window_Title.Name = "Window_Title";
             this.Window_Title.Size = new System.Drawing.Size(111, 18);
@@ -116,6 +116,7 @@
             // Input_Username
             // 
             this.Input_Username.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Input_Username.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
             this.Input_Username.Location = new System.Drawing.Point(112, 60);
             this.Input_Username.Margin = new System.Windows.Forms.Padding(3, 3, 35, 3);
             this.Input_Username.MaxLength = 24;
@@ -127,6 +128,7 @@
             // Input_ServerIP
             // 
             this.Input_ServerIP.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Input_ServerIP.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
             this.Input_ServerIP.Location = new System.Drawing.Point(112, 90);
             this.Input_ServerIP.Margin = new System.Windows.Forms.Padding(3, 3, 35, 3);
             this.Input_ServerIP.MaxLength = 512;
