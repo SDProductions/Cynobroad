@@ -6,22 +6,13 @@ namespace Cynobroad
 {
     public partial class Login : Form
     {
-        private string username = "";
-        private string serverIP = "";
-        private bool isSelfHost = false;
+        internal string Username = "";
+        internal string ServerIP = "";
+        internal bool IsSelfHost = false;
         private bool verifiedAccept = false;
 
         private bool mouseDown;
         private Point lastLocation;
-
-        public string Username
-        { get { return username; } }
-
-        public string ServerIP
-        { get { return serverIP; } }
-
-        public bool IsSelfHost
-        { get { return isSelfHost; } }
 
         public Login()
         {
@@ -91,20 +82,20 @@ namespace Cynobroad
 
         private void Accept_Click(object sender, EventArgs e)
         {
-            username = Input_Username.Text.Trim();
-            serverIP = Input_ServerIP.Text.Trim();
+            Username = Input_Username.Text.Trim();
+            ServerIP = Input_ServerIP.Text.Trim();
 
-            if (string.IsNullOrEmpty(username))
+            if (string.IsNullOrEmpty(Username))
             {
                 MessageBox.Show("Username must be up to 24 characters and cannot be null.");
                 return;
             }
-            if (username.Contains(">"))
+            if (Username.Contains(">"))
             {
                 MessageBox.Show("'>' is forbidden within the username.");
                 return;
             }
-            if ((string.IsNullOrEmpty(serverIP) || !serverIP.Contains(".")) && !isSelfHost)
+            if ((string.IsNullOrEmpty(ServerIP) || !ServerIP.Contains(".")) && !IsSelfHost)
             {
                 MessageBox.Show("Please specify an IPv4 server address.");
                 return;
@@ -117,7 +108,7 @@ namespace Cynobroad
         private void Login_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!verifiedAccept)
-                username = "";
+                Username = "";
         }
 
         private void Window_Close_Click(object sender, EventArgs e)
@@ -129,13 +120,13 @@ namespace Cynobroad
         {
             if (HostServerCheck.Checked)
             {
-                isSelfHost = true;
+                IsSelfHost = true;
                 Input_ServerIP.ReadOnly = true;
                 Input_ServerIP.Text = "";
             }
             else
             {
-                isSelfHost = false;
+                IsSelfHost = false;
                 Input_ServerIP.ReadOnly = false;
             }
         }

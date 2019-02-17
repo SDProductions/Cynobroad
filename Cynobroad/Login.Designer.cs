@@ -116,7 +116,7 @@
             // Input_Username
             // 
             this.Input_Username.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Input_Username.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+            this.Input_Username.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.Input_Username.Location = new System.Drawing.Point(112, 60);
             this.Input_Username.Margin = new System.Windows.Forms.Padding(3, 3, 35, 3);
             this.Input_Username.MaxLength = 24;
@@ -128,7 +128,7 @@
             // Input_ServerIP
             // 
             this.Input_ServerIP.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Input_ServerIP.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+            this.Input_ServerIP.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.Input_ServerIP.Location = new System.Drawing.Point(112, 90);
             this.Input_ServerIP.Margin = new System.Windows.Forms.Padding(3, 3, 35, 3);
             this.Input_ServerIP.MaxLength = 512;
@@ -165,6 +165,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.ClientSize = new System.Drawing.Size(350, 150);
             this.Controls.Add(this.HostServerCheck);
             this.Controls.Add(this.Accept);

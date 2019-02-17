@@ -33,7 +33,7 @@
             // 
             // Block_Message
             // 
-            this.Block_Message.BackColor = System.Drawing.SystemColors.Control;
+            this.Block_Message.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.Block_Message.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Block_Message.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Block_Message.Location = new System.Drawing.Point(53, 6);
@@ -50,6 +50,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
             this.Controls.Add(this.Block_Message);
             this.Name = "MessageBlockExtender";
             this.Size = new System.Drawing.Size(565, 30);

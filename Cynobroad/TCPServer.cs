@@ -16,24 +16,16 @@ namespace Cynobroad
         private TcpListener _server;
         private bool _isRunning;
 
-        private List<string> connectedUsers = new List<string>();
-        public List<string> ConnectedUsers
-        {
-            get { return connectedUsers; }
-        }
+        private List<string> ConnectedUsers = new List<string>();
 
-        private ConcurrentQueue<string> messageQueue;
-        public ConcurrentQueue<string> MessageQueue
-        {
-            get { return messageQueue; }
-        }
+        private ConcurrentQueue<string> MessageQueue;
 
         public TCPServer(int port)
         {
             _server = new TcpListener(IPAddress.Any, port);
             _server.Start();
 
-            messageQueue = new ConcurrentQueue<string>();
+            MessageQueue = new ConcurrentQueue<string>();
 
             _isRunning = true;
 
@@ -86,8 +78,8 @@ namespace Cynobroad
 
             StreamReader sReader = new StreamReader(client.GetStream(), Encoding.ASCII);
 
-            String sData = null;
-            Boolean isConnected = true;
+            string sData = null;
+            bool isConnected = true;
 
             while (isConnected)
             {
@@ -124,6 +116,12 @@ namespace Cynobroad
 
                     client.Dispose();
                     break;
+                }
+                else if (sData.StartsWith("statchange://"))
+                {
+                    sData = sData.Substring(13);
+
+                    MessageQueue.Enqueue($"post://statchange.{sData.Split('>')[0]}.{sData.Split('>')[1]}");
                 }
                 else if (sData.StartsWith("send://"))
                 {

@@ -35,10 +35,10 @@
             // 
             // User_OnlineStatus
             // 
-            this.User_OnlineStatus.BackColor = System.Drawing.Color.LawnGreen;
+            this.User_OnlineStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(196)))), ((int)(((byte)(125)))));
             this.User_OnlineStatus.Location = new System.Drawing.Point(0, 0);
             this.User_OnlineStatus.Name = "User_OnlineStatus";
-            this.User_OnlineStatus.Size = new System.Drawing.Size(8, 25);
+            this.User_OnlineStatus.Size = new System.Drawing.Size(5, 25);
             this.User_OnlineStatus.TabIndex = 0;
             this.User_OnlineStatus.TabStop = false;
             // 
@@ -56,6 +56,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(183)))), ((int)(((byte)(183)))));
             this.Controls.Add(this.User_Username);
             this.Controls.Add(this.User_OnlineStatus);
             this.Name = "ConnectedUserBlock";

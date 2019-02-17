@@ -29,12 +29,7 @@ namespace Cynobroad
         private List<string> connectedUsers = new List<string>();
 
         //Messages to send
-        private ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
-        public ConcurrentQueue<string> MessageQueue
-        {
-            get { return messageQueue; }
-            set { messageQueue = value; }
-        }
+        private ConcurrentQueue<string> MessageQueue = new ConcurrentQueue<string>();
 
         //Window tools
         private bool mouseDown;
@@ -53,6 +48,8 @@ namespace Cynobroad
         private void Client_Load(object sender, EventArgs e)
         {
             //Get login info and try connecting
+            Hide();
+
             using (Login login = new Login())
             {
                 login.ShowDialog();
@@ -64,13 +61,11 @@ namespace Cynobroad
                     SelfHoster.RunWorkerAsync();
                     serverIP = Array.Find(Dns.GetHostEntry(string.Empty).AddressList,
                                           a => a.AddressFamily == AddressFamily.InterNetwork).ToString();
-                    Window_Title.Text = $"Cynobroad Client - Local Server at {serverIP} on port 42069";
+                    Window_Title.Text = $"Cynobroad Client - Local Server Running at {serverIP}";
                     
                 }
                 else
-                {
                     serverIP = login.ServerIP;
-                }
 
                 username = login.Username;
                 User_UsernameLabel.Text = username;
@@ -90,14 +85,12 @@ namespace Cynobroad
                 SendMsgBox.Focus();
             }
 
+            Show();
+
             if (!isConnected)
-            {
-                User_ConnectionStatus.BackColor = Color.OrangeRed;
-            }
+                User_ConnectionStatus.BackColor = Color.FromArgb(224, 102, 102);
             else
-            {
-                User_ConnectionStatus.BackColor = Color.LawnGreen;
-            }
+                User_ConnectionStatus.BackColor = Color.FromArgb(147, 196, 125);
         }
 
         private void SelfHoster_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -111,7 +104,7 @@ namespace Cynobroad
             _sWriter = new StreamWriter(_client.GetStream(), Encoding.ASCII);
             _sReader = new StreamReader(_client.GetStream(), Encoding.ASCII);
 
-            messageQueue = new ConcurrentQueue<string>();
+            MessageQueue = new ConcurrentQueue<string>();
 
             ThreadStart startReceiver = new ThreadStart(HandleReceiver);
             receivingThread = new Thread(startReceiver)
@@ -164,13 +157,28 @@ namespace Cynobroad
                         int yOffset = 0;
                         foreach (string user in connectedUsers)
                         {
-                            var newUserBlock = new ConnectedUserBlock();
+                            ConnectedUserBlock newUserBlock = new ConnectedUserBlock();
+                            newUserBlock.Name = user;
                             newUserBlock.User_Username.Text = user;
                             newUserBlock.Location = new Point(0, 5 + yOffset);
                             yOffset += 25;
 
                             Invoke(addUser, newUserBlock);
                         }
+                    }
+                    else if (readString.StartsWith("statchange."))
+                    {
+                        readString = readString.Substring(11);
+                        ConnectedUserBlock selectedUser = (ConnectedUserBlock)Panel_ConnectedUsersList.Controls.Find(readString.Split('.')[0], false)[0];
+
+                        if (readString.Split('.')[1] == "0")
+                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(147, 196, 125);
+                        else if (readString.Split('.')[1] == "1")
+                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(255, 217, 102);
+                        else if (readString.Split('.')[1] == "2")
+                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(224, 102, 102);
+                        else if (readString.Split('.')[1] == "3")
+                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(153, 153, 153);
                     }
                 }
                 else
@@ -188,7 +196,7 @@ namespace Cynobroad
                 {
                     foreach (string msg in MessageQueue)
                     {
-                        messageQueue.TryDequeue(out string str);
+                        MessageQueue.TryDequeue(out string str);
                         _sWriter.WriteLine(msg);
                         _sWriter.Flush();
                     }
@@ -275,9 +283,9 @@ namespace Cynobroad
         {
             if (mouseDown)
             {
-                this.Location = new Point((Location.X - lastLocation.X) + e.X,
-                                          (Location.Y - lastLocation.Y) + e.Y);
-                this.Update();
+                Location = new Point((Location.X - lastLocation.X) + e.X,
+                                     (Location.Y - lastLocation.Y) + e.Y);
+                Update();
             }
         }
 
@@ -305,16 +313,17 @@ namespace Cynobroad
 
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {
-            messageQueue.Enqueue("close://" + username);
+            MessageQueue.Enqueue("close://" + username);
         }
 
         private void Button_SignOut_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            messageQueue.Enqueue("close://" + username);
+            MessageQueue.Enqueue("close://" + username);
             Thread.Sleep(10);
             isConnected = false;
             _client.Close();
-
+            SelfHoster.Dispose();
+            
             Client_Load(sender, e);
         }
 
@@ -326,38 +335,27 @@ namespace Cynobroad
                 isConnected = true;
             }
             catch (SocketException) { }
-            catch
-            {
-                isConnected = false;
-            }
+            catch { isConnected = false; }
 
             if (_client.Connected)
-            {
                 isConnected = true;
-            }
             else
-            {
                 isConnected = false;
-            }
 
             for (int i = 0; i < 3; i++)
             {
-                User_ConnectionStatus.BackColor = Color.Gold;
+                User_ConnectionStatus.BackColor = Color.FromArgb(255, 217, 102);
                 Update();
                 Thread.Sleep(500);
-                User_ConnectionStatus.BackColor = Color.FromArgb(224, 224, 244);
+                User_ConnectionStatus.BackColor = Color.FromArgb(183, 183, 183);
                 Update();
                 Thread.Sleep(500);
             }
 
             if (!isConnected)
-            {
-                User_ConnectionStatus.BackColor = Color.OrangeRed;
-            }
+                User_ConnectionStatus.BackColor = Color.FromArgb(224, 102, 102);
             else
-            {
-                User_ConnectionStatus.BackColor = Color.LawnGreen;
-            }
+                User_ConnectionStatus.BackColor = Color.FromArgb(147, 196, 125);
         }
 
         private void SendMsgBox_KeyDown(object sender, KeyEventArgs e)
@@ -381,14 +379,40 @@ namespace Cynobroad
                 return;
             }
             if (string.IsNullOrEmpty(SendMsgBox.Text))
-            {
                 return;
-            }
 
-            messageQueue.Enqueue($"send://{username}>{SendMsgBox.Text}");
+            MessageQueue.Enqueue($"send://{username}>{SendMsgBox.Text}");
 
             SendMsgBox.Text = "";
             SendMsgBox.Focus();
+        }
+
+        private void StatusChanger_Online_Click(object sender, EventArgs e)
+        {
+            MessageQueue.Enqueue($"statchange://{username}>0");
+            User_NotificationStatus.Text = "Online";
+            NotificationStatusSlider.Location = new Point(80, 50);
+        }
+
+        private void StatusChanger_Idle_Click(object sender, EventArgs e)
+        {
+            MessageQueue.Enqueue($"statchange://{username}>1");
+            User_NotificationStatus.Text = "Away";
+            NotificationStatusSlider.Location = new Point(102, 50);
+        }
+
+        private void StatusChanger_DND_Click(object sender, EventArgs e)
+        {
+            MessageQueue.Enqueue($"statchange://{username}>2");
+            User_NotificationStatus.Text = "Busy";
+            NotificationStatusSlider.Location = new Point(124, 50);
+        }
+
+        private void StatusChanger_Invisible_Click(object sender, EventArgs e)
+        {
+            MessageQueue.Enqueue($"statchange://{username}>3");
+            User_NotificationStatus.Text = "Invisible";
+            NotificationStatusSlider.Location = new Point(146, 50);
         }
     }
 }
