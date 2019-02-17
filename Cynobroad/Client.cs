@@ -47,15 +47,17 @@ namespace Cynobroad
 
         private void Client_Load(object sender, EventArgs e)
         {
-            //Get login info and try connecting
             Hide();
 
+            //Get login info and try connecting
             using (Login login = new Login())
             {
                 login.ShowDialog();
 
+                //if no username or server specified, and not self host, close window
+                //if parameters are met, start self hoster if applicable or connect to server with username
                 if (string.IsNullOrEmpty(login.Username) && string.IsNullOrEmpty(login.ServerIP))
-                    this.Close();
+                    Close();
                 else if (login.IsSelfHost)
                 {
                     SelfHoster.RunWorkerAsync();
@@ -82,10 +84,12 @@ namespace Cynobroad
                     isConnected = false;
                 }
 
+                //show main form and close login dialog
                 Show();
                 SendMsgBox.Focus();
             }
 
+            //if connection failed set status to red, else green
             if (!isConnected)
                 User_ConnectionStatus.BackColor = Color.FromArgb(224, 102, 102);
             else
@@ -99,44 +103,42 @@ namespace Cynobroad
 
         private void InitializeConnection()
         {
+            //connect to server ip on port 42069
             _client.Connect(serverIP, port);
             _sWriter = new StreamWriter(_client.GetStream(), Encoding.ASCII);
             _sReader = new StreamReader(_client.GetStream(), Encoding.ASCII);
 
-            MessageQueue = new ConcurrentQueue<string>();
-
+            //start a background task handling incoming messages
             ThreadStart startReceiver = new ThreadStart(HandleReceiver);
             receivingThread = new Thread(startReceiver)
-            {
-                IsBackground = true
-            };
+            { IsBackground = true };
             receivingThread.Start();
 
+            //start a background task handling outgoing messages
             ThreadStart startSender = new ThreadStart(HandleSender);
             sendingThread = new Thread(startSender)
-            {
-                IsBackground = true
-            };
+            { IsBackground = true };
             sendingThread.Start();
         }
 
         private void HandleReceiver()
         {
+            //set delegates
             AddRichMsg addRichMsg = RichMessageReceived;
             AddUserBlock addUser = AddUser;
             RemoveAllUserBlocks clearUsers = RemoveAllUsers;
 
+            //send to server join message
             _sWriter.WriteLine($"join://{username}");
             _sWriter.Flush();
 
+            //while connected, recieve messages and process them
             while (isConnected)
             {
                 string readString = _sReader.ReadLine();
 
                 if (readString == null)
-                {
                     readString = "";
-                }
 
                 if (readString.StartsWith("post://"))
                 {
@@ -156,10 +158,12 @@ namespace Cynobroad
                         int yOffset = 0;
                         foreach (string user in connectedUsers)
                         {
-                            ConnectedUserBlock newUserBlock = new ConnectedUserBlock();
-                            newUserBlock.Name = user;
+                            ConnectedUserBlock newUserBlock = new ConnectedUserBlock
+                            {
+                                Name = user,
+                                Location = new Point(0, 5 + yOffset)
+                            };
                             newUserBlock.User_Username.Text = user;
-                            newUserBlock.Location = new Point(0, 5 + yOffset);
                             yOffset += 25;
 
                             Invoke(addUser, newUserBlock);
@@ -181,14 +185,13 @@ namespace Cynobroad
                     }
                 }
                 else
-                {
                     Invoke(addRichMsg, readString);
-                }
             }
         }
 
         private void HandleSender()
         {
+            //while connected, if there are messages to send, send them
             while (isConnected)
             {
                 if (!MessageQueue.IsEmpty)
@@ -207,42 +210,43 @@ namespace Cynobroad
         private void RichMessageReceived(string msg)
         {
             if (string.IsNullOrEmpty(msg))
-            {
                 return;
-            }
 
             string[] data = msg.Split('>');
             string username = data[0];
             msg = msg.Remove(0, username.Length + 1);
 
+            //if the previous message was this user
             if (Panel_Messages.Controls.Count > 1 &&
-                ((Panel_Messages.Controls[Panel_Messages.Controls.Count - 1].GetType() == typeof(MessageBlock) &&
-                ((MessageBlock)Panel_Messages.Controls[Panel_Messages.Controls.Count - 1]).Block_User.Text == username) ||
-                Panel_Messages.Controls[Panel_Messages.Controls.Count - 1].GetType() == typeof(MessageBlockExtender) &&
-                ((MessageBlockExtender)Panel_Messages.Controls[Panel_Messages.Controls.Count - 1]).username == username))
+                ((MessageBlock)Panel_Messages.Controls[Panel_Messages.Controls.Count - 1]).Block_User.Text == username ||
+                ((MessageBlockExtender)Panel_Messages.Controls[Panel_Messages.Controls.Count - 1]).username == username)
             {
+                //create new message extender with username and text
                 var newMSGExtender = new MessageBlockExtender();
                 newMSGExtender.Block_Message.Text = msg;
                 newMSGExtender.username = username;
 
+                //move previous messages up
                 Control lastMSG = Panel_Messages.Controls[Panel_Messages.Controls.Count - 1];
                 int nextYPos = lastMSG.Location.Y + lastMSG.Height;
                 newMSGExtender.Location = new Point(0, nextYPos);
 
+                //add the new message, and scroll down
                 Panel_Messages.Controls.Add(newMSGExtender);
-                Panel_Messages.VerticalScroll.Value = Panel_Messages.VerticalScroll.Maximum;
                 Panel_Messages.Update();
+                Panel_Messages.VerticalScroll.Value = Panel_Messages.VerticalScroll.Maximum;
             }
             else
             {
+                //create new regular message block
                 var newMSGBlock = new MessageBlock();
                 newMSGBlock.Block_User.Text = username;
                 newMSGBlock.Block_Message.Text = msg;
 
+                //if no messages, set pos
                 if (Panel_Messages.Controls.Count == 0)
-                {
                     newMSGBlock.Location = new Point(0, 0);
-                }
+                //else, move previous messages up
                 else
                 {
                     Control lastMSG = Panel_Messages.Controls[Panel_Messages.Controls.Count - 1];
@@ -250,9 +254,10 @@ namespace Cynobroad
                     newMSGBlock.Location = new Point(0, nextYPos);
                 }
 
+                //add, update panel, and scroll down
                 Panel_Messages.Controls.Add(newMSGBlock);
-                Panel_Messages.VerticalScroll.Value = Panel_Messages.VerticalScroll.Maximum;
                 Panel_Messages.Update();
+                Panel_Messages.VerticalScroll.Value = Panel_Messages.VerticalScroll.Maximum;
             }
         }
 
@@ -267,6 +272,7 @@ namespace Cynobroad
                 Panel_ConnectedUsersList.Controls[0].Dispose();
         }
 
+        #region Basic Window Functions
         private void Window_ControlBar_MouseDown(object sender, MouseEventArgs e)
         {
             mouseDown = true;
@@ -309,6 +315,7 @@ namespace Cynobroad
         {
             Close();
         }
+        #endregion
 
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -317,17 +324,20 @@ namespace Cynobroad
 
         private void Button_SignOut_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            //send closing request and reset variables
             MessageQueue.Enqueue("close://" + username);
             Thread.Sleep(10);
             isConnected = false;
             _client.Close();
             SelfHoster.Dispose();
             
+            //rerun launch method to sign in again
             Client_Load(sender, e);
         }
 
         private void Button_Reconnect_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            //try reconnection and set connection bool
             try
             {
                 InitializeConnection();
@@ -341,6 +351,7 @@ namespace Cynobroad
             else
                 isConnected = false;
 
+            //useless visual effect
             for (int i = 0; i < 3; i++)
             {
                 User_ConnectionStatus.BackColor = Color.FromArgb(255, 217, 102);
@@ -351,6 +362,7 @@ namespace Cynobroad
                 Thread.Sleep(500);
             }
 
+            //update connection status indicator
             if (!isConnected)
                 User_ConnectionStatus.BackColor = Color.FromArgb(224, 102, 102);
             else
@@ -359,6 +371,7 @@ namespace Cynobroad
 
         private void SendMsgBox_KeyDown(object sender, KeyEventArgs e)
         {
+            //if enter pressed on msg box, don't play windows alert sound and send msg
             if (e.KeyValue == 13)
             {
                 Send_Click(sender, e);
@@ -369,8 +382,10 @@ namespace Cynobroad
 
         private void Send_Click(object sender, EventArgs e)
         {
+            //remove whitespace
             SendMsgBox.Text = SendMsgBox.Text.TrimEnd();
 
+            //check requirements
             if (SendMsgBox.Text.Length > 1024)
             {
                 MessageBox.Show("Woah woah woah! Our stingy network hamsters simply don't want to deal with all your bytes. " +
@@ -380,8 +395,8 @@ namespace Cynobroad
             if (string.IsNullOrEmpty(SendMsgBox.Text))
                 return;
 
+            //add msg to queue and clear msg box
             MessageQueue.Enqueue($"send://{username}>{SendMsgBox.Text}");
-
             SendMsgBox.Text = "";
             SendMsgBox.Focus();
         }
