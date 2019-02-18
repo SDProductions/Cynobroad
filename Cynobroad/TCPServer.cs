@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +15,7 @@ namespace Cynobroad
     class TCPServer
     {
         private TcpListener _server;
-        private bool _isRunning;
+        private readonly bool _isRunning;
 
         private List<string> ConnectedUsers = new List<string>();
 
@@ -75,60 +76,55 @@ namespace Cynobroad
         public void HandleReceiver(object _client)
         {
             TcpClient client = (TcpClient)_client;
-
             StreamReader sReader = new StreamReader(client.GetStream(), Encoding.ASCII);
-
-            string sData = null;
+            
+            PacketStruct packet = new PacketStruct();
             bool isConnected = true;
-
             while (isConnected)
             {
                 try
-                { sData = sReader.ReadLine(); }
+                {
+                    packet = JsonConvert.DeserializeObject<PacketStruct>(sReader.ReadLine());
+                }
                 catch { }
 
-                if (sData.StartsWith("join://"))
+                if (packet.Type == "join")
                 {
-                    sData = sData.Substring(7);
-                    MessageQueue.Enqueue($"SERVER>{sData} has joined the network.");
+                    MessageQueue.Enqueue($"SERVER>{packet.User} has joined the network.");
 
-                    ConnectedUsers.Add(sData);
+                    ConnectedUsers.Add(packet.User);
                     ConnectedUsers.Sort();
 
-                    MessageQueue.Enqueue("post://rcu");
+                    MessageQueue.Enqueue("rcu");
                     foreach (string user in ConnectedUsers)
                     {
-                        MessageQueue.Enqueue($"post://acu.{user}");
+                        MessageQueue.Enqueue($"acu.{user}");
                     }
                 }
-                else if (sData.StartsWith("close://"))
+                else if (packet.Type == "close")
                 {
-                    sData = sData.Substring(8);
-                    MessageQueue.Enqueue($"SERVER>{sData} has left the network.");
+                    MessageQueue.Enqueue($"SERVER>{packet.User} has left the network.");
 
-                    if (ConnectedUsers.Contains(sData))
-                        ConnectedUsers.Remove(sData);
+                    if (ConnectedUsers.Contains(packet.User))
+                        ConnectedUsers.Remove(packet.User);
                     ConnectedUsers.Sort();
 
-                    MessageQueue.Enqueue("post://rcu");
+                    MessageQueue.Enqueue("rcu");
                     foreach (string user in ConnectedUsers)
                     {
-                        MessageQueue.Enqueue($"post://acu.{user}");
+                        MessageQueue.Enqueue($"acu.{packet.User}");
                     }
 
                     client.Dispose();
                     break;
                 }
-                else if (sData.StartsWith("statchange://"))
+                else if (packet.Type == "statchange")
                 {
-                    sData = sData.Substring(13);
-
-                    MessageQueue.Enqueue($"post://statchange.{sData.Split('>')[0]}.{sData.Split('>')[1]}");
+                    MessageQueue.Enqueue($"statchange.{packet.User}.{packet.Message}");
                 }
-                else if (sData.StartsWith("send://"))
+                else if (packet.Type == "send")
                 {
-                    sData = sData.Substring(7);
-                    MessageQueue.Enqueue(sData);
+                    MessageQueue.Enqueue($"{packet.User}>{packet.Message}");
                 }
                 else
                 {

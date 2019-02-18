@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
@@ -101,13 +102,25 @@ namespace Cynobroad
             TCPServer server = new TCPServer(42069);
         }
 
+        private void CreateAndSendPacket(string type, string message = null)
+        {
+            PacketStruct packetStruct = new PacketStruct
+            {
+                Type = type,
+                User = username,
+                Message = message
+            };
+
+            MessageQueue.Enqueue(JsonConvert.SerializeObject(packetStruct));
+        }
+
         private void InitializeConnection()
         {
             //connect to server ip on port 42069
             _client.Connect(serverIP, port);
             _sWriter = new StreamWriter(_client.GetStream(), Encoding.ASCII);
             _sReader = new StreamReader(_client.GetStream(), Encoding.ASCII);
-
+            
             //start a background task handling incoming messages
             ThreadStart startReceiver = new ThreadStart(HandleReceiver);
             receivingThread = new Thread(startReceiver)
@@ -129,11 +142,15 @@ namespace Cynobroad
             RemoveAllUserBlocks clearUsers = RemoveAllUsers;
 
             //send to server join message
-            _sWriter.WriteLine($"join://{username}");
+            PacketStruct packetStruct = new PacketStruct
+            {
+                Type = "join",
+                User = username
+            };
+            _sWriter.WriteLine(JsonConvert.SerializeObject(packetStruct));
             _sWriter.Flush();
 
             string readString = "";
-
             //while connected, recieve messages and process them
             while (isConnected)
             {
@@ -141,50 +158,46 @@ namespace Cynobroad
 
                 if (readString == null)
                     readString = "";
-
-                if (readString.StartsWith("post://"))
+                
+                if (readString.StartsWith("rcu"))
                 {
-                    readString = readString.Substring(7);
-                    if (readString.StartsWith("rcu"))
-                    {
-                        Invoke(clearUsers);
-                        connectedUsers = new List<string>();
-                    }
-                    else if (readString.StartsWith("acu."))
-                    {
-                        readString = readString.Substring(4);
+                    Invoke(clearUsers);
+                    connectedUsers = new List<string>();
+                }
+                else if (readString.StartsWith("acu."))
+                {
+                    readString = readString.Substring(4);
 
-                        Invoke(clearUsers);
-                        connectedUsers.Add(readString);
+                    Invoke(clearUsers);
+                    connectedUsers.Add(readString);
 
-                        int yOffset = 0;
-                        foreach (string user in connectedUsers)
+                    int yOffset = 0;
+                    foreach (string user in connectedUsers)
+                    {
+                        ConnectedUserBlock newUserBlock = new ConnectedUserBlock
                         {
-                            ConnectedUserBlock newUserBlock = new ConnectedUserBlock
-                            {
-                                Name = user,
-                                Location = new Point(0, 5 + yOffset)
-                            };
-                            newUserBlock.User_Username.Text = user;
-                            yOffset += 25;
+                            Name = user,
+                            Location = new Point(0, 5 + yOffset)
+                        };
+                        newUserBlock.User_Username.Text = user;
+                        yOffset += 25;
 
-                            Invoke(addUser, newUserBlock);
-                        }
+                        Invoke(addUser, newUserBlock);
                     }
-                    else if (readString.StartsWith("statchange."))
-                    {
-                        readString = readString.Substring(11);
-                        ConnectedUserBlock selectedUser = (ConnectedUserBlock)Panel_ConnectedUsersList.Controls.Find(readString.Split('.')[0], false)[0];
+                }
+                else if (readString.StartsWith("statchange."))
+                {
+                    readString = readString.Substring(11);
+                    ConnectedUserBlock selectedUser = (ConnectedUserBlock)Panel_ConnectedUsersList.Controls.Find(readString.Split('.')[0], false)[0];
 
-                        if (readString.Split('.')[1] == "0")
-                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(147, 196, 125);
-                        else if (readString.Split('.')[1] == "1")
-                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(255, 217, 102);
-                        else if (readString.Split('.')[1] == "2")
-                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(224, 102, 102);
-                        else if (readString.Split('.')[1] == "3")
-                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(153, 153, 153);
-                    }
+                    if (readString.Split('.')[1] == "0")
+                        selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(147, 196, 125);
+                    else if (readString.Split('.')[1] == "1")
+                        selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(255, 217, 102);
+                    else if (readString.Split('.')[1] == "2")
+                        selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(224, 102, 102);
+                    else if (readString.Split('.')[1] == "3")
+                        selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(153, 153, 153);
                 }
                 else
                 {
@@ -327,13 +340,13 @@ namespace Cynobroad
 
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {
-            MessageQueue.Enqueue("close://" + username);
+            CreateAndSendPacket("close");
         }
 
         private void Button_SignOut_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             //send closing request and reset variables
-            MessageQueue.Enqueue("close://" + username);
+            CreateAndSendPacket("close");
             Thread.Sleep(10);
             isConnected = false;
             _client.Close();
@@ -404,35 +417,35 @@ namespace Cynobroad
                 return;
 
             //add msg to queue and clear msg box
-            MessageQueue.Enqueue($"send://{username}>{SendMsgBox.Text}");
+            CreateAndSendPacket("send", SendMsgBox.Text);
             SendMsgBox.Text = "";
             SendMsgBox.Focus();
         }
 
         private void StatusChanger_Online_Click(object sender, EventArgs e)
         {
-            MessageQueue.Enqueue($"statchange://{username}>0");
+            CreateAndSendPacket("statchange", "0");
             User_NotificationStatus.Text = "Online";
             NotificationStatusSlider.Location = new Point(80, 50);
         }
 
         private void StatusChanger_Idle_Click(object sender, EventArgs e)
         {
-            MessageQueue.Enqueue($"statchange://{username}>1");
+            CreateAndSendPacket("statchange", "1");
             User_NotificationStatus.Text = "Away";
             NotificationStatusSlider.Location = new Point(102, 50);
         }
 
         private void StatusChanger_DND_Click(object sender, EventArgs e)
         {
-            MessageQueue.Enqueue($"statchange://{username}>2");
+            CreateAndSendPacket("statchange", "2");
             User_NotificationStatus.Text = "Busy";
             NotificationStatusSlider.Location = new Point(124, 50);
         }
 
         private void StatusChanger_Invisible_Click(object sender, EventArgs e)
         {
-            MessageQueue.Enqueue($"statchange://{username}>3");
+            CreateAndSendPacket("statchange", "3");
             User_NotificationStatus.Text = "Invisible";
             NotificationStatusSlider.Location = new Point(146, 50);
         }
