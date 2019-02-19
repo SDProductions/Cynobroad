@@ -48,15 +48,15 @@ namespace Cynobroad
 
         public void HandleSender(object obj)
         {
-            // retrieve client from parameter passed to thread
+            // retrieve client and create writer
             TcpClient client = (TcpClient)obj;
-
-            // sets two streams for in/out
             StreamWriter sWriter = new StreamWriter(client.GetStream(), Encoding.ASCII);
 
+            // pass client onto reciever
             Thread receiveThread = new Thread(new ParameterizedThreadStart(HandleReceiver));
             receiveThread.Start(client);
 
+            // while connected, if messages to send, send them
             while (client.Connected)
             {
                 if (!MessageQueue.IsEmpty)
@@ -73,63 +73,60 @@ namespace Cynobroad
             }
         }
 
+        private void CreateAndSendPacket(string type, string username, string message = null)
+        {
+            PacketStruct packetStruct = new PacketStruct
+            {
+                Type = type,
+                User = username,
+                Message = message
+            };
+
+            MessageQueue.Enqueue(JsonConvert.SerializeObject(packetStruct));
+        }
+
         public void HandleReceiver(object _client)
         {
+            // retrieve client and create reader
             TcpClient client = (TcpClient)_client;
             StreamReader sReader = new StreamReader(client.GetStream(), Encoding.ASCII);
             
             PacketStruct packet = new PacketStruct();
-            bool isConnected = true;
-            while (isConnected)
+            while (client.Connected)
             {
-                try
+                //Deserialize packet from StreamReader
+                try   { packet = JsonConvert.DeserializeObject<PacketStruct>(sReader.ReadLine()); }
+                catch { packet = new PacketStruct(); }
+
+                //Check packet type and act accordingly
+                switch (packet.Type)
                 {
-                    packet = JsonConvert.DeserializeObject<PacketStruct>(sReader.ReadLine());
-                }
-                catch { }
+                    case "join":
+                        CreateAndSendPacket("send", packet.User, $"{packet.User} has joined the network!");
 
-                if (packet.Type == "join")
-                {
-                    MessageQueue.Enqueue($"SERVER>{packet.User} has joined the network.");
+                        ConnectedUsers.Add(packet.User);
+                        ConnectedUsers.Sort();
+                        CreateAndSendPacket("acu", packet.User);
 
-                    ConnectedUsers.Add(packet.User);
-                    ConnectedUsers.Sort();
+                        break;
+                    case "close":
+                        CreateAndSendPacket("send", packet.User, $"{packet.User} has left the network!");
 
-                    MessageQueue.Enqueue("rcu");
-                    foreach (string user in ConnectedUsers)
-                    {
-                        MessageQueue.Enqueue($"acu.{user}");
-                    }
-                }
-                else if (packet.Type == "close")
-                {
-                    MessageQueue.Enqueue($"SERVER>{packet.User} has left the network.");
-
-                    if (ConnectedUsers.Contains(packet.User))
                         ConnectedUsers.Remove(packet.User);
-                    ConnectedUsers.Sort();
+                        ConnectedUsers.Sort();
+                        CreateAndSendPacket("rcu", packet.User);
 
-                    MessageQueue.Enqueue("rcu");
-                    foreach (string user in ConnectedUsers)
-                    {
-                        MessageQueue.Enqueue($"acu.{packet.User}");
-                    }
-
-                    client.Dispose();
-                    break;
-                }
-                else if (packet.Type == "statchange")
-                {
-                    MessageQueue.Enqueue($"statchange.{packet.User}.{packet.Message}");
-                }
-                else if (packet.Type == "send")
-                {
-                    MessageQueue.Enqueue($"{packet.User}>{packet.Message}");
-                }
-                else
-                {
-                    client.Dispose();
-                    break;
+                        client.Dispose();
+                        break;
+                    case "statchange":
+                        CreateAndSendPacket("statchange", packet.User, packet.Message);
+                        break;
+                    case "send":
+                        CreateAndSendPacket("send", packet.User, packet.Message);
+                        break;
+                    default:
+                        client.Dispose();
+                        break;
                 }
             }
         }

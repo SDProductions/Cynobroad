@@ -37,7 +37,7 @@ namespace Cynobroad
         private Point lastLocation;
 
         //Threadsafe calls
-        delegate void AddRichMsg(string msg);
+        delegate void AddRichMsg(Tuple<string, string> nameAndMessage);
         delegate void AddUserBlock(ConnectedUserBlock control);
         delegate void RemoveAllUserBlocks();
 
@@ -79,15 +79,15 @@ namespace Cynobroad
                     _client = new TcpClient();
                     isConnected = true;
                     InitializeConnection();
+                    
+                    //show main form and close login dialog
+                    Show();
+                    SendMsgBox.Focus();
                 }
                 catch
                 {
                     isConnected = false;
                 }
-
-                //show main form and close login dialog
-                Show();
-                SendMsgBox.Focus();
             }
 
             //if connection failed set status to red, else green
@@ -150,27 +150,19 @@ namespace Cynobroad
             _sWriter.WriteLine(JsonConvert.SerializeObject(packetStruct));
             _sWriter.Flush();
 
-            string readString = "";
             //while connected, recieve messages and process them
+            PacketStruct packet = new PacketStruct();
             while (isConnected)
             {
-                readString = _sReader.ReadLine();
-
-                if (readString == null)
-                    readString = "";
+                //Deserialize packet from StreamReader
+                try   { packet = JsonConvert.DeserializeObject<PacketStruct>(_sReader.ReadLine()); }
+                catch { packet = new PacketStruct(); }
                 
-                if (readString.StartsWith("rcu"))
+                if (packet.Type == "rcu")
                 {
-                    Invoke(clearUsers);
-                    connectedUsers = new List<string>();
-                }
-                else if (readString.StartsWith("acu."))
-                {
-                    readString = readString.Substring(4);
+                    connectedUsers.Remove(packet.User);
 
                     Invoke(clearUsers);
-                    connectedUsers.Add(readString);
-
                     int yOffset = 0;
                     foreach (string user in connectedUsers)
                     {
@@ -185,25 +177,49 @@ namespace Cynobroad
                         Invoke(addUser, newUserBlock);
                     }
                 }
-                else if (readString.StartsWith("statchange."))
+                else if (packet.Type == "acu")
                 {
-                    readString = readString.Substring(11);
-                    ConnectedUserBlock selectedUser = (ConnectedUserBlock)Panel_ConnectedUsersList.Controls.Find(readString.Split('.')[0], false)[0];
+                    connectedUsers.Add(packet.User);
 
-                    if (readString.Split('.')[1] == "0")
-                        selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(147, 196, 125);
-                    else if (readString.Split('.')[1] == "1")
-                        selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(255, 217, 102);
-                    else if (readString.Split('.')[1] == "2")
-                        selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(224, 102, 102);
-                    else if (readString.Split('.')[1] == "3")
-                        selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(153, 153, 153);
+                    Invoke(clearUsers);
+                    int yOffset = 0;
+                    foreach (string user in connectedUsers)
+                    {
+                        ConnectedUserBlock newUserBlock = new ConnectedUserBlock
+                        {
+                            Name = user,
+                            Location = new Point(0, 5 + yOffset)
+                        };
+                        newUserBlock.User_Username.Text = user;
+                        yOffset += 25;
+
+                        Invoke(addUser, newUserBlock);
+                    }
+                }
+                else if (packet.Type == "statchange")
+                {
+                    ConnectedUserBlock selectedUser = (ConnectedUserBlock)Panel_ConnectedUsersList.Controls.Find(packet.User, false)[0];
+
+                    switch (packet.Message)
+                    {
+                        case "0":
+                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(147, 196, 125);
+                            break;
+                        case "1":
+                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(255, 217, 102);
+                            break;
+                        case "2":
+                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(224, 102, 102);
+                            break;
+                        case "3":
+                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(153, 153, 153);
+                            break;
+                    }
                 }
                 else
                 {
-                    try { Invoke(addRichMsg, readString); }
-                    catch
-                    { break; }
+                    try   { Invoke(addRichMsg, new Tuple<string,string>(packet.User, packet.Message)); }
+                    catch { break; }
                 }
             }
         }
@@ -226,14 +242,13 @@ namespace Cynobroad
             }
         }
 
-        private void RichMessageReceived(string msg)
+        private void RichMessageReceived(Tuple<string,string> nameAndMessage)
         {
-            if (string.IsNullOrEmpty(msg))
-                return;
+            string username = nameAndMessage.Item1;
+            string msg = nameAndMessage.Item2;
 
-            string[] data = msg.Split('>');
-            string username = data[0];
-            msg = msg.Remove(0, username.Length + 1);
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(msg))
+                return;
 
             //if the previous message was this user
             if (Panel_Messages.Controls.Count > 1 &&
@@ -289,8 +304,7 @@ namespace Cynobroad
 
         private void RemoveAllUsers()
         {
-            while (Panel_ConnectedUsersList.Controls.Count > 0)
-                Panel_ConnectedUsersList.Controls[0].Dispose();
+            Panel_ConnectedUsersList.Controls.Clear();
         }
 
         #region Basic Window Functions
@@ -341,6 +355,8 @@ namespace Cynobroad
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {
             CreateAndSendPacket("close");
+            receivingThread.Abort();
+            sendingThread.Abort();
         }
 
         private void Button_SignOut_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -349,6 +365,8 @@ namespace Cynobroad
             CreateAndSendPacket("close");
             Thread.Sleep(10);
             isConnected = false;
+            receivingThread.Abort();
+            sendingThread.Abort();
             _client.Close();
             SelfHoster.Dispose();
             
