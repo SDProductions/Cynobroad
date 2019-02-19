@@ -196,6 +196,28 @@ namespace Cynobroad
                         Invoke(addUser, newUserBlock);
                     }
                 }
+                else if (packet.Type == "ucu")
+                {
+                    if (packet.User == username)
+                    {
+                        connectedUsers = JsonConvert.DeserializeObject<List<string>>(packet.Message);
+
+                        Invoke(clearUsers);
+                        int yOffset = 0;
+                        foreach (string user in connectedUsers)
+                        {
+                            ConnectedUserBlock newUserBlock = new ConnectedUserBlock
+                            {
+                                Name = user,
+                                Location = new Point(0, 5 + yOffset)
+                            };
+                            newUserBlock.User_Username.Text = user;
+                            yOffset += 25;
+
+                            Invoke(addUser, newUserBlock);
+                        }
+                    }
+                }
                 else if (packet.Type == "statchange")
                 {
                     ConnectedUserBlock selectedUser = (ConnectedUserBlock)Panel_ConnectedUsersList.Controls.Find(packet.User, false)[0];
@@ -354,9 +376,8 @@ namespace Cynobroad
 
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {
-            CreateAndSendPacket("close");
-            receivingThread.Abort();
-            sendingThread.Abort();
+            if (isConnected)
+                CreateAndSendPacket("close");
         }
 
         private void Button_SignOut_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -365,8 +386,6 @@ namespace Cynobroad
             CreateAndSendPacket("close");
             Thread.Sleep(10);
             isConnected = false;
-            receivingThread.Abort();
-            sendingThread.Abort();
             _client.Close();
             SelfHoster.Dispose();
             

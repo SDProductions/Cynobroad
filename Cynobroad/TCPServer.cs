@@ -102,15 +102,18 @@ namespace Cynobroad
                 switch (packet.Type)
                 {
                     case "join":
-                        CreateAndSendPacket("send", packet.User, $"{packet.User} has joined the network!");
+                        CreateAndSendPacket("send", "Server", $"{packet.User} has joined the network!");
+
+                        CreateAndSendPacket("ucu", packet.User, JsonConvert.SerializeObject(ConnectedUsers));
 
                         ConnectedUsers.Add(packet.User);
                         ConnectedUsers.Sort();
+
                         CreateAndSendPacket("acu", packet.User);
 
                         break;
                     case "close":
-                        CreateAndSendPacket("send", packet.User, $"{packet.User} has left the network!");
+                        CreateAndSendPacket("send", "Server", $"{packet.User} has left the network!");
 
                         ConnectedUsers.Remove(packet.User);
                         ConnectedUsers.Sort();
