@@ -38,8 +38,8 @@ namespace Cynobroad
 
         //Threadsafe calls
         delegate void AddRichMsg(Tuple<string, string> nameAndMessage);
-        delegate void AddUserBlock(ConnectedUserBlock control);
-        delegate void RemoveAllUserBlocks();
+        delegate void AddUserBlock(string username);
+        delegate void DelUserBlock(string username);
 
         public Client()
         {
@@ -138,8 +138,8 @@ namespace Cynobroad
         {
             //set delegates
             AddRichMsg addRichMsg = RichMessageReceived;
-            AddUserBlock addUser = AddUser;
-            RemoveAllUserBlocks clearUsers = RemoveAllUsers;
+            AddUserBlock addUser = AddConnectedUser;
+            DelUserBlock delUser = RemoveConnectedUser;
 
             //send to server join message
             PacketStruct packetStruct = new PacketStruct
@@ -158,90 +158,46 @@ namespace Cynobroad
                 try   { packet = JsonConvert.DeserializeObject<PacketStruct>(_sReader.ReadLine()); }
                 catch { packet = new PacketStruct(); }
                 
-                if (packet.Type == "rcu")
+                switch (packet.Type)
                 {
-                    connectedUsers.Remove(packet.User);
-
-                    Invoke(clearUsers);
-                    int yOffset = 0;
-                    foreach (string user in connectedUsers)
-                    {
-                        ConnectedUserBlock newUserBlock = new ConnectedUserBlock
+                    case "rcu":
+                        Invoke(delUser, packet.User);
+                        break;
+                    case "acu":
+                        Invoke(addUser, packet.User);
+                        break;
+                    case "ucu":
+                        if (packet.User == username)
                         {
-                            Name = user,
-                            Location = new Point(0, 5 + yOffset)
-                        };
-                        newUserBlock.User_Username.Text = user;
-                        yOffset += 25;
+                            List<string> usersList = JsonConvert.DeserializeObject<List<string>>(packet.Message);
 
-                        Invoke(addUser, newUserBlock);
-                    }
-                }
-                else if (packet.Type == "acu")
-                {
-                    connectedUsers.Add(packet.User);
-
-                    Invoke(clearUsers);
-                    int yOffset = 0;
-                    foreach (string user in connectedUsers)
-                    {
-                        ConnectedUserBlock newUserBlock = new ConnectedUserBlock
-                        {
-                            Name = user,
-                            Location = new Point(0, 5 + yOffset)
-                        };
-                        newUserBlock.User_Username.Text = user;
-                        yOffset += 25;
-
-                        Invoke(addUser, newUserBlock);
-                    }
-                }
-                else if (packet.Type == "ucu")
-                {
-                    if (packet.User == username)
-                    {
-                        connectedUsers = JsonConvert.DeserializeObject<List<string>>(packet.Message);
-
-                        Invoke(clearUsers);
-                        int yOffset = 0;
-                        foreach (string user in connectedUsers)
-                        {
-                            ConnectedUserBlock newUserBlock = new ConnectedUserBlock
-                            {
-                                Name = user,
-                                Location = new Point(0, 5 + yOffset)
-                            };
-                            newUserBlock.User_Username.Text = user;
-                            yOffset += 25;
-
-                            Invoke(addUser, newUserBlock);
+                            foreach (string user in usersList)
+                            { Invoke(addUser, user); }
                         }
-                    }
-                }
-                else if (packet.Type == "statchange")
-                {
-                    ConnectedUserBlock selectedUser = (ConnectedUserBlock)Panel_ConnectedUsersList.Controls.Find(packet.User, false)[0];
+                        break;
+                    case "statchange":
+                        ConnectedUserBlock selectedUser = (ConnectedUserBlock)Panel_ConnectedUsersList.Controls.Find(packet.User, false)[0];
 
-                    switch (packet.Message)
-                    {
-                        case "0":
-                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(147, 196, 125);
-                            break;
-                        case "1":
-                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(255, 217, 102);
-                            break;
-                        case "2":
-                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(224, 102, 102);
-                            break;
-                        case "3":
-                            selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(153, 153, 153);
-                            break;
-                    }
-                }
-                else
-                {
-                    try   { Invoke(addRichMsg, new Tuple<string,string>(packet.User, packet.Message)); }
-                    catch { break; }
+                        switch (packet.Message)
+                        {
+                            case "0":
+                                selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(147, 196, 125);
+                                break;
+                            case "1":
+                                selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(255, 217, 102);
+                                break;
+                            case "2":
+                                selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(224, 102, 102);
+                                break;
+                            case "3":
+                                selectedUser.User_OnlineStatus.BackColor = Color.FromArgb(153, 153, 153);
+                                break;
+                        }
+                        break;
+                    default:
+                        try { Invoke(addRichMsg, new Tuple<string, string>(packet.User, packet.Message)); }
+                        catch { break; }
+                        break;
                 }
             }
         }
@@ -319,14 +275,38 @@ namespace Cynobroad
             }
         }
 
-        private void AddUser(ConnectedUserBlock userBlock)
+        private void RemoveConnectedUser(string username)
         {
-            Panel_ConnectedUsersList.Controls.Add(userBlock);
+            connectedUsers.Remove(username);
+            connectedUsers.Sort();
+
+            Panel_ConnectedUsersList.Controls.RemoveByKey(username);
+
+            foreach (Control control in Panel_ConnectedUsersList.Controls)
+            {
+                control.Location = new Point(0, 5 + (connectedUsers.IndexOf(control.Name) * 25));
+            }
+            Update();
         }
 
-        private void RemoveAllUsers()
+        private void AddConnectedUser(string username)
         {
-            Panel_ConnectedUsersList.Controls.Clear();
+            connectedUsers.Add(username);
+            connectedUsers.Sort();
+
+            ConnectedUserBlock newUserBlock = new ConnectedUserBlock
+            {
+                Name = username,
+                Location = new Point(0, 5)
+            };
+            newUserBlock.User_Username.Text = username;
+            Panel_ConnectedUsersList.Controls.Add(newUserBlock);
+
+            foreach (Control control in Panel_ConnectedUsersList.Controls)
+            {
+                control.Location = new Point(0, 5 + (connectedUsers.IndexOf(control.Name) * 25));
+            }
+            Update();
         }
 
         #region Basic Window Functions
