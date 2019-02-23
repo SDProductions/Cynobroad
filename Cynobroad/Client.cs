@@ -19,14 +19,6 @@ namespace Cynobroad
         private int port = 42069;
         private string serverIP = "";
 
-        //Connection handlers
-        private Thread receivingThread;
-        private Thread sendingThread;
-        private TcpClient _client;
-        private StreamReader _sReader;
-        private StreamWriter _sWriter;
-        private bool isConnected = false;
-        
         private List<string> connectedUsers = new List<string>();
 
         //Messages to send
@@ -74,27 +66,15 @@ namespace Cynobroad
                 User_UsernameLabel.Text = username;
                 User_ConnectedServer.Text = serverIP;
 
-                try
-                {
-                    _client = new TcpClient();
-                    isConnected = true;
-                    InitializeConnection();
+                InitializeConnection();
                     
-                    //show main form and close login dialog
-                    Show();
-                    SendMsgBox.Focus();
-                }
-                catch
-                {
-                    isConnected = false;
-                }
+                Show();
+                SendMsgBox.Focus();
             }
 
             //if connection failed set status to red, else green
-            if (!isConnected)
-                User_ConnectionStatus.BackColor = Color.FromArgb(224, 102, 102);
-            else
-                User_ConnectionStatus.BackColor = Color.FromArgb(147, 196, 125);
+            User_ConnectionStatus.BackColor = Color.FromArgb(224, 102, 102);
+            User_ConnectionStatus.BackColor = Color.FromArgb(147, 196, 125);
         }
 
         private void SelfHoster_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -104,6 +84,7 @@ namespace Cynobroad
 
         private void CreateAndSendPacket(string type, string message = null)
         {
+            //TODO: make this specify server and channel names
             PacketStruct packetStruct = new PacketStruct
             {
                 Type = type,
@@ -116,22 +97,7 @@ namespace Cynobroad
 
         private void InitializeConnection()
         {
-            //connect to server ip on port 42069
-            _client.Connect(serverIP, port);
-            _sWriter = new StreamWriter(_client.GetStream(), Encoding.ASCII);
-            _sReader = new StreamReader(_client.GetStream(), Encoding.ASCII);
-            
-            //start a background task handling incoming messages
-            ThreadStart startReceiver = new ThreadStart(HandleReceiver);
-            receivingThread = new Thread(startReceiver)
-            { IsBackground = true };
-            receivingThread.Start();
-
-            //start a background task handling outgoing messages
-            ThreadStart startSender = new ThreadStart(HandleSender);
-            sendingThread = new Thread(startSender)
-            { IsBackground = true };
-            sendingThread.Start();
+            //TODO: create instance of client and add it to an accessible dictionary or something
         }
 
         private void HandleReceiver()
@@ -140,23 +106,12 @@ namespace Cynobroad
             AddRichMsg addRichMsg = RichMessageReceived;
             AddUserBlock addUser = AddConnectedUser;
             DelUserBlock delUser = RemoveConnectedUser;
-
-            //send to server join message
-            PacketStruct packetStruct = new PacketStruct
-            {
-                Type = "join",
-                User = username
-            };
-            _sWriter.WriteLine(JsonConvert.SerializeObject(packetStruct));
-            _sWriter.Flush();
-
-            //while connected, recieve messages and process them
+            
             PacketStruct packet = new PacketStruct();
-            while (isConnected)
+            while (true)
             {
-                //Deserialize packet from StreamReader
-                try   { packet = JsonConvert.DeserializeObject<PacketStruct>(_sReader.ReadLine()); }
-                catch { packet = new PacketStruct(); }
+                //Get packet from client instance and process
+                packet = new PacketStruct();
                 
                 switch (packet.Type)
                 {
@@ -204,20 +159,7 @@ namespace Cynobroad
 
         private void HandleSender()
         {
-            //while connected, if there are messages to send, send them
-            while (isConnected)
-            {
-                if (!MessageQueue.IsEmpty)
-                {
-                    foreach (string msg in MessageQueue)
-                    {
-                        MessageQueue.TryDequeue(out string str);
-                        _sWriter.WriteLine(msg);
-                        _sWriter.Flush();
-                    }
-                }
-                Thread.Sleep(10);
-            }
+            //TODO: Route packet to correct client instance
         }
 
         private void RichMessageReceived(Tuple<string,string> nameAndMessage)
@@ -356,55 +298,13 @@ namespace Cynobroad
 
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (isConnected)
-                CreateAndSendPacket("close");
+            //TODO: close all client connections
+            SelfHoster.Dispose();
         }
 
         private void Button_SignOut_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            //send closing request and reset variables
-            CreateAndSendPacket("close");
-            Thread.Sleep(10);
-            isConnected = false;
-            _client.Close();
-            SelfHoster.Dispose();
-            
-            //rerun launch method to sign in again
-            Client_Load(sender, e);
-        }
-
-        private void Button_Reconnect_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            //try reconnection and set connection bool
-            try
-            {
-                InitializeConnection();
-                isConnected = true;
-            }
-            catch (SocketException) { }
-            catch { isConnected = false; }
-
-            if (_client.Connected)
-                isConnected = true;
-            else
-                isConnected = false;
-
-            //useless visual effect
-            for (int i = 0; i < 3; i++)
-            {
-                User_ConnectionStatus.BackColor = Color.FromArgb(255, 217, 102);
-                Update();
-                Thread.Sleep(500);
-                User_ConnectionStatus.BackColor = Color.FromArgb(183, 183, 183);
-                Update();
-                Thread.Sleep(500);
-            }
-
-            //update connection status indicator
-            if (!isConnected)
-                User_ConnectionStatus.BackColor = Color.FromArgb(224, 102, 102);
-            else
-                User_ConnectionStatus.BackColor = Color.FromArgb(147, 196, 125);
+            //send closing request to single client
         }
 
         private void SendMsgBox_KeyDown(object sender, KeyEventArgs e)
