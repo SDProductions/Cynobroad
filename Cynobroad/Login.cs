@@ -43,13 +43,13 @@ namespace Cynobroad
         private void Button_MouseEnter(object sender, EventArgs e)
         {
             Control obj = (Control)sender;
-            obj.BackColor = Color.FromArgb(69, 77, 117);
+            obj.BackColor = Color.FromArgb(200, 200, 200);
         }
 
         private void Button_MouseLeave(object sender, EventArgs e)
         {
             Control obj = (Control)sender;
-            obj.BackColor = Color.FromArgb(52, 57, 83);
+            obj.BackColor = Color.FromArgb(240, 240, 240);
         }
 
         private void Input_Username_KeyDown(object sender, KeyEventArgs e)

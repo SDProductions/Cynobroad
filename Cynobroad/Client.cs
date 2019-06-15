@@ -46,6 +46,51 @@ namespace Cynobroad
             InitializeComponent();
         }
 
+        #region Basic Window Functions
+        private void Window_ControlBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            lastLocation = e.Location;
+        }
+
+        private void Window_ControlBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+        private void Window_ControlBar_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                Location = new Point((Location.X - lastLocation.X) + e.X,
+                                     (Location.Y - lastLocation.Y) + e.Y);
+                Update();
+            }
+        }
+
+        private void Button_MouseEnter(object sender, EventArgs e)
+        {
+            Control button = (Control)sender;
+            button.BackColor = Color.FromArgb(180, 180, 180);
+        }
+
+        private void Button_MouseLeave(object sender, EventArgs e)
+        {
+            Control button = (Control)sender;
+            button.BackColor = Color.FromArgb(150, 150, 150);
+        }
+
+        private void Window_Minimize_Click(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Minimized;
+        }
+
+        private void Window_Close_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+        #endregion
+
         private void Client_Load(object sender, EventArgs e)
         {
             Hide();
@@ -309,51 +354,6 @@ namespace Cynobroad
             Update();
         }
 
-        #region Basic Window Functions
-        private void Window_ControlBar_MouseDown(object sender, MouseEventArgs e)
-        {
-            mouseDown = true;
-            lastLocation = e.Location;
-        }
-
-        private void Window_ControlBar_MouseUp(object sender, MouseEventArgs e)
-        {
-            mouseDown = false;
-        }
-
-        private void Window_ControlBar_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (mouseDown)
-            {
-                Location = new Point((Location.X - lastLocation.X) + e.X,
-                                     (Location.Y - lastLocation.Y) + e.Y);
-                Update();
-            }
-        }
-
-        private void Button_MouseEnter(object sender, EventArgs e)
-        {
-            Control button = (Control)sender;
-            button.BackColor = Color.FromArgb(69, 77, 117);
-        }
-
-        private void Button_MouseLeave(object sender, EventArgs e)
-        {
-            Control button = (Control)sender;
-            button.BackColor = Color.FromArgb(52, 57, 83);
-        }
-
-        private void Window_Minimize_Click(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Minimized;
-        }
-
-        private void Window_Close_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-        #endregion
-
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (isConnected)
@@ -443,28 +443,28 @@ namespace Cynobroad
         {
             CreateAndSendPacket("statchange", "0");
             User_NotificationStatus.Text = "Online";
-            NotificationStatusSlider.Location = new Point(80, 50);
+            NotificationStatusSlider.Location = new Point(98, 50);
         }
 
         private void StatusChanger_Idle_Click(object sender, EventArgs e)
         {
             CreateAndSendPacket("statchange", "1");
             User_NotificationStatus.Text = "Away";
-            NotificationStatusSlider.Location = new Point(102, 50);
+            NotificationStatusSlider.Location = new Point(120, 50);
         }
 
         private void StatusChanger_DND_Click(object sender, EventArgs e)
         {
             CreateAndSendPacket("statchange", "2");
             User_NotificationStatus.Text = "Busy";
-            NotificationStatusSlider.Location = new Point(124, 50);
+            NotificationStatusSlider.Location = new Point(142, 50);
         }
 
         private void StatusChanger_Invisible_Click(object sender, EventArgs e)
         {
             CreateAndSendPacket("statchange", "3");
             User_NotificationStatus.Text = "Invisible";
-            NotificationStatusSlider.Location = new Point(146, 50);
+            NotificationStatusSlider.Location = new Point(165, 50);
         }
     }
 }

@@ -46,13 +46,14 @@
             // 
             // ControlBar
             // 
-            this.ControlBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(57)))), ((int)(((byte)(83)))));
+            this.ControlBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.ControlBar.Controls.Add(this.Window_Close);
             this.ControlBar.Controls.Add(this.Window_Title);
             this.ControlBar.Controls.Add(this.Window_Icon);
             this.ControlBar.Location = new System.Drawing.Point(0, 0);
+            this.ControlBar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ControlBar.Name = "ControlBar";
-            this.ControlBar.Size = new System.Drawing.Size(350, 40);
+            this.ControlBar.Size = new System.Drawing.Size(467, 42);
             this.ControlBar.TabIndex = 0;
             this.ControlBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ControlBar_MouseDown);
             this.ControlBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ControlBar_MouseMove);
@@ -62,10 +63,10 @@
             // 
             this.Window_Close.BackgroundImage = global::Cynobroad.Properties.Resources.close;
             this.Window_Close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Window_Close.Location = new System.Drawing.Point(321, 4);
-            this.Window_Close.Margin = new System.Windows.Forms.Padding(4);
+            this.Window_Close.Location = new System.Drawing.Point(428, 5);
+            this.Window_Close.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.Window_Close.Name = "Window_Close";
-            this.Window_Close.Size = new System.Drawing.Size(25, 25);
+            this.Window_Close.Size = new System.Drawing.Size(33, 31);
             this.Window_Close.TabIndex = 2;
             this.Window_Close.TabStop = false;
             this.Window_Close.Click += new System.EventHandler(this.Window_Close_Click);
@@ -76,20 +77,22 @@
             // 
             this.Window_Title.AutoSize = true;
             this.Window_Title.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Window_Title.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.Window_Title.Location = new System.Drawing.Point(35, 8);
+            this.Window_Title.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.Window_Title.Location = new System.Drawing.Point(47, 10);
+            this.Window_Title.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Window_Title.Name = "Window_Title";
-            this.Window_Title.Size = new System.Drawing.Size(111, 18);
+            this.Window_Title.Size = new System.Drawing.Size(53, 23);
             this.Window_Title.TabIndex = 1;
-            this.Window_Title.Text = "Cynobroad Login";
+            this.Window_Title.Text = "Login";
             // 
             // Window_Icon
             // 
             this.Window_Icon.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Window_Icon.BackgroundImage")));
             this.Window_Icon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.Window_Icon.Location = new System.Drawing.Point(4, 4);
+            this.Window_Icon.Location = new System.Drawing.Point(5, 5);
+            this.Window_Icon.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Window_Icon.Name = "Window_Icon";
-            this.Window_Icon.Size = new System.Drawing.Size(25, 25);
+            this.Window_Icon.Size = new System.Drawing.Size(33, 31);
             this.Window_Icon.TabIndex = 0;
             this.Window_Icon.TabStop = false;
             // 
@@ -97,9 +100,11 @@
             // 
             this.Label_Username.AutoSize = true;
             this.Label_Username.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Username.Location = new System.Drawing.Point(35, 60);
+            this.Label_Username.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.Label_Username.Location = new System.Drawing.Point(47, 65);
+            this.Label_Username.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Label_Username.Name = "Label_Username";
-            this.Label_Username.Size = new System.Drawing.Size(71, 18);
+            this.Label_Username.Size = new System.Drawing.Size(92, 23);
             this.Label_Username.TabIndex = 1;
             this.Label_Username.Text = "Username:";
             // 
@@ -107,9 +112,11 @@
             // 
             this.Label_Password.AutoSize = true;
             this.Label_Password.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label_Password.Location = new System.Drawing.Point(35, 90);
+            this.Label_Password.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.Label_Password.Location = new System.Drawing.Point(47, 102);
+            this.Label_Password.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Label_Password.Name = "Label_Password";
-            this.Label_Password.Size = new System.Drawing.Size(66, 18);
+            this.Label_Password.Size = new System.Drawing.Size(84, 23);
             this.Label_Password.TabIndex = 2;
             this.Label_Password.Text = "Server IP:";
             // 
@@ -117,11 +124,11 @@
             // 
             this.Input_Username.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Input_Username.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.Input_Username.Location = new System.Drawing.Point(112, 60);
-            this.Input_Username.Margin = new System.Windows.Forms.Padding(3, 3, 35, 3);
+            this.Input_Username.Location = new System.Drawing.Point(149, 65);
+            this.Input_Username.Margin = new System.Windows.Forms.Padding(4, 4, 47, 4);
             this.Input_Username.MaxLength = 24;
             this.Input_Username.Name = "Input_Username";
-            this.Input_Username.Size = new System.Drawing.Size(194, 20);
+            this.Input_Username.Size = new System.Drawing.Size(257, 23);
             this.Input_Username.TabIndex = 3;
             this.Input_Username.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Input_Username_KeyDown);
             // 
@@ -129,11 +136,11 @@
             // 
             this.Input_ServerIP.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Input_ServerIP.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.Input_ServerIP.Location = new System.Drawing.Point(112, 90);
-            this.Input_ServerIP.Margin = new System.Windows.Forms.Padding(3, 3, 35, 3);
+            this.Input_ServerIP.Location = new System.Drawing.Point(149, 102);
+            this.Input_ServerIP.Margin = new System.Windows.Forms.Padding(4, 4, 47, 4);
             this.Input_ServerIP.MaxLength = 512;
             this.Input_ServerIP.Name = "Input_ServerIP";
-            this.Input_ServerIP.Size = new System.Drawing.Size(194, 20);
+            this.Input_ServerIP.Size = new System.Drawing.Size(257, 23);
             this.Input_ServerIP.TabIndex = 4;
             this.Input_ServerIP.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Input_ServerIP_KeyDown);
             // 
@@ -141,9 +148,10 @@
             // 
             this.Accept.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Accept.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Accept.Location = new System.Drawing.Point(231, 116);
+            this.Accept.Location = new System.Drawing.Point(308, 143);
+            this.Accept.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Accept.Name = "Accept";
-            this.Accept.Size = new System.Drawing.Size(75, 23);
+            this.Accept.Size = new System.Drawing.Size(100, 28);
             this.Accept.TabIndex = 5;
             this.Accept.Text = "Login";
             this.Accept.UseVisualStyleBackColor = true;
@@ -153,9 +161,10 @@
             // 
             this.HostServerCheck.AutoSize = true;
             this.HostServerCheck.Font = new System.Drawing.Font("Trebuchet MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HostServerCheck.Location = new System.Drawing.Point(38, 117);
+            this.HostServerCheck.Location = new System.Drawing.Point(51, 144);
+            this.HostServerCheck.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.HostServerCheck.Name = "HostServerCheck";
-            this.HostServerCheck.Size = new System.Drawing.Size(100, 22);
+            this.HostServerCheck.Size = new System.Drawing.Size(120, 24);
             this.HostServerCheck.TabIndex = 6;
             this.HostServerCheck.Text = "Host A Server";
             this.HostServerCheck.UseVisualStyleBackColor = true;
@@ -163,10 +172,10 @@
             // 
             // Login
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
-            this.ClientSize = new System.Drawing.Size(350, 150);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(210)))), ((int)(((byte)(210)))));
+            this.ClientSize = new System.Drawing.Size(467, 185);
             this.Controls.Add(this.HostServerCheck);
             this.Controls.Add(this.Accept);
             this.Controls.Add(this.Input_ServerIP);
@@ -176,6 +185,7 @@
             this.Controls.Add(this.ControlBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Login";
             this.Text = "Login";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Login_FormClosing);
