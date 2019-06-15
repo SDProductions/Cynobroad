@@ -1,11 +1,15 @@
 # Cynobroad
 
-[![Build Status](https://travis-ci.org/SDProductions/Cynobroad.svg?branch=master)](https://travis-ci.org/SDProductions/Cynobroad)![Github All Releases](https://img.shields.io/github/downloads/SDProductions/Cynobroad/total.svg)
+[![Build Status](https://travis-ci.org/SDProductions/Cynobroad.svg?branch=master)](https://travis-ci.org/SDProductions/Cynobroad) ![Github All Releases](https://img.shields.io/github/downloads/SDProductions/Cynobroad/total.svg)
 
-Cynobroad is a lightweight and portable chat program with painless setups. Our program currently uses a fraction of Discord's total RAM usage and should be compatible with all versions of Windows 8, 8.1, and 10. Windows 7 and previous editions are untested, but theoretically should work up to Windows XP. The console version of Cynobroad should work on any system with access to the .NET Framework.
+Cynobroad is a lightweight and portable chat program for Windows 7 and later. Currently, it is under development and definitely not stable, so a release is provided only to play around with.
 
-Cynobroad provides the convenience of a web-based platform, while retaining features that could only ever work on a desktop platform, all while maintaining a low profile on your system. Our program utilises user-hosted servers - which means that a user could instantly start a server and have clients connecting within seconds on the same network. The client application takes up only ~700KB on your disk drive, and even under heavy usage, will likely never take more than 50MB of system memory. That means you could run it on a *netbook* from over a decade ago. Most other desktop apps will use more than 100MB - and websites will use even more, anywhere from 250MB to 1GB of RAM! That could mean your web-based chat app is hogging 20x more memory than ours would.
+# What makes this one relatively special
 
-Unfortunately because we are poor folk, we do not have a reasonable means of hosting any dedicated servers for Cynobroad, so we will leave that to the users. The Cynobroad TCP Server uses less than 10 MB of RAM at idle, and almost no CPU power, meaning even the cheapest cloud hosting option would be massive overkill for hosting the server application.
+Cynobroad primarily uses self-hosted lightweight servers that allow users to connect without the need for a central service like traditional chat apps might. This even means that Cynobroad can be painlessly setup on a network with no external connection to the internet, but still be used.
 
-Of course, this is a WIP application, so if you don't like something or want a feature, suggest it and come back later, and we may have it there! Suggestions always appreciated.
+Cynobroad is also extremely lightweight, running at less than 15MB of RAM, even when hosting a server, and the whole installation comes under 700KB, making it extremely ideal for computers that cannot afford installing a relatively heavier application such as Discord.
+
+# What is coming
+
+Image and file transfer, emoji support, redesigned UI elements to bring the look up to speed, reactions, message editing, overall stability and polish, and much more. We aim to bring Cynobroad, in terms of basic functionality, on par with something like Discord or Skype.
