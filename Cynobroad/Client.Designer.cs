@@ -39,9 +39,8 @@
             this.Label_SignedInAs = new System.Windows.Forms.Label();
             this.User_UsernameLabel = new System.Windows.Forms.Label();
             this.Button_SignOut = new System.Windows.Forms.LinkLabel();
+            this.Button_Reconnect = new System.Windows.Forms.LinkLabel();
             this.Panel_InfoSummary = new System.Windows.Forms.Panel();
-            this.NotificationStatusSlider = new System.Windows.Forms.PictureBox();
-            this.User_NotificationStatus = new System.Windows.Forms.Label();
             this.StatusChanger_Invisible = new System.Windows.Forms.PictureBox();
             this.StatusChanger_DND = new System.Windows.Forms.PictureBox();
             this.StatusChanger_Idle = new System.Windows.Forms.PictureBox();
@@ -53,18 +52,20 @@
             this.Panel_ConnectedUsersList = new System.Windows.Forms.Panel();
             this.Panel_Messages = new System.Windows.Forms.Panel();
             this.SelfHoster = new System.ComponentModel.BackgroundWorker();
+            this.User_NotificationStatus = new System.Windows.Forms.Label();
+            this.NotificationStatusSlider = new System.Windows.Forms.PictureBox();
             this.Window_ControlBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Minimize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Close)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Window_Icon)).BeginInit();
             this.Panel_InfoSummary.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.NotificationStatusSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.StatusChanger_Invisible)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.StatusChanger_DND)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.StatusChanger_Idle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.StatusChanger_Online)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Separator)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.User_ConnectionStatus)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NotificationStatusSlider)).BeginInit();
             this.SuspendLayout();
             // 
             // Window_ControlBar
@@ -184,6 +185,21 @@
             this.Button_SignOut.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.Button_SignOut.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Button_SignOut_LinkClicked);
             // 
+            // Button_Reconnect
+            // 
+            this.Button_Reconnect.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.Button_Reconnect.AutoSize = true;
+            this.Button_Reconnect.Font = new System.Drawing.Font("Trebuchet MS", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Button_Reconnect.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.Button_Reconnect.Location = new System.Drawing.Point(77, 52);
+            this.Button_Reconnect.Name = "Button_Reconnect";
+            this.Button_Reconnect.Size = new System.Drawing.Size(49, 15);
+            this.Button_Reconnect.TabIndex = 10;
+            this.Button_Reconnect.TabStop = true;
+            this.Button_Reconnect.Text = "reconnect";
+            this.Button_Reconnect.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.Button_Reconnect.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Button_Reconnect_LinkClicked);
+            // 
             // Panel_InfoSummary
             // 
             this.Panel_InfoSummary.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(183)))), ((int)(((byte)(183)))));
@@ -196,6 +212,7 @@
             this.Panel_InfoSummary.Controls.Add(this.Label_ConnectedUsers);
             this.Panel_InfoSummary.Controls.Add(this.Separator);
             this.Panel_InfoSummary.Controls.Add(this.User_ConnectedServer);
+            this.Panel_InfoSummary.Controls.Add(this.Button_Reconnect);
             this.Panel_InfoSummary.Controls.Add(this.Button_SignOut);
             this.Panel_InfoSummary.Controls.Add(this.User_UsernameLabel);
             this.Panel_InfoSummary.Controls.Add(this.User_ConnectionStatus);
@@ -205,26 +222,6 @@
             this.Panel_InfoSummary.Name = "Panel_InfoSummary";
             this.Panel_InfoSummary.Size = new System.Drawing.Size(205, 95);
             this.Panel_InfoSummary.TabIndex = 5;
-            // 
-            // NotificationStatusSlider
-            // 
-            this.NotificationStatusSlider.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(97)))), ((int)(((byte)(124)))));
-            this.NotificationStatusSlider.Location = new System.Drawing.Point(80, 50);
-            this.NotificationStatusSlider.Name = "NotificationStatusSlider";
-            this.NotificationStatusSlider.Size = new System.Drawing.Size(22, 4);
-            this.NotificationStatusSlider.TabIndex = 18;
-            this.NotificationStatusSlider.TabStop = false;
-            // 
-            // User_NotificationStatus
-            // 
-            this.User_NotificationStatus.AutoSize = true;
-            this.User_NotificationStatus.Font = new System.Drawing.Font("Trebuchet MS", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.User_NotificationStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.User_NotificationStatus.Location = new System.Drawing.Point(4, 52);
-            this.User_NotificationStatus.Name = "User_NotificationStatus";
-            this.User_NotificationStatus.Size = new System.Drawing.Size(38, 15);
-            this.User_NotificationStatus.TabIndex = 17;
-            this.User_NotificationStatus.Text = "Online";
             // 
             // StatusChanger_Invisible
             // 
@@ -327,6 +324,26 @@
             // 
             this.SelfHoster.DoWork += new System.ComponentModel.DoWorkEventHandler(this.SelfHoster_DoWork);
             // 
+            // User_NotificationStatus
+            // 
+            this.User_NotificationStatus.AutoSize = true;
+            this.User_NotificationStatus.Font = new System.Drawing.Font("Trebuchet MS", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.User_NotificationStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.User_NotificationStatus.Location = new System.Drawing.Point(4, 52);
+            this.User_NotificationStatus.Name = "User_NotificationStatus";
+            this.User_NotificationStatus.Size = new System.Drawing.Size(38, 15);
+            this.User_NotificationStatus.TabIndex = 17;
+            this.User_NotificationStatus.Text = "Online";
+            // 
+            // NotificationStatusSlider
+            // 
+            this.NotificationStatusSlider.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(77)))), ((int)(((byte)(97)))), ((int)(((byte)(124)))));
+            this.NotificationStatusSlider.Location = new System.Drawing.Point(80, 50);
+            this.NotificationStatusSlider.Name = "NotificationStatusSlider";
+            this.NotificationStatusSlider.Size = new System.Drawing.Size(22, 4);
+            this.NotificationStatusSlider.TabIndex = 18;
+            this.NotificationStatusSlider.TabStop = false;
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -352,13 +369,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.Window_Icon)).EndInit();
             this.Panel_InfoSummary.ResumeLayout(false);
             this.Panel_InfoSummary.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.NotificationStatusSlider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.StatusChanger_Invisible)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.StatusChanger_DND)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.StatusChanger_Idle)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.StatusChanger_Online)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Separator)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.User_ConnectionStatus)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NotificationStatusSlider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -376,6 +393,7 @@
         private System.Windows.Forms.Label Label_SignedInAs;
         private System.Windows.Forms.Label User_UsernameLabel;
         private System.Windows.Forms.LinkLabel Button_SignOut;
+        private System.Windows.Forms.LinkLabel Button_Reconnect;
         private System.Windows.Forms.Label User_ConnectedServer;
         private System.Windows.Forms.PictureBox Separator;
         internal System.Windows.Forms.PictureBox User_ConnectionStatus;
