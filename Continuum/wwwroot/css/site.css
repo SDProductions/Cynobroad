@@ -11,7 +11,7 @@ html {
 }
 
 body {
-    background-color: #edeef3;
+    background-color: #fff;
     margin-bottom: 60px;
 }
 
@@ -20,7 +20,7 @@ nav {
     height: 50px;
     line-height: 50px;
     position: relative;
-    padding: 0 15px;
+    padding: 0 20px;
 }
 
 nav #links {
@@ -37,7 +37,6 @@ nav .links {
     flex-direction: column;
     flex: 1 1;
     align-items: center;
-    min-width: 200px;
 }
 
 nav .links a {
@@ -56,17 +55,13 @@ nav .links a:hover {
 
 nav #menu-button {
     background-color: inherit;
-    border: solid 2px #6bd;
-    border-radius: 10px;
-    color: #6bd;
+    border: solid 2px #bbf;
+    border-radius: 6px;
+    color: #bbf;
     float: right;
     padding: 0 24px;
     line-height: 30px;
     margin-top: 10px;
-}
-
-.solo-nav .links:first-of-type {
-    line-height: 50px;
 }
 
 a.navbar-brand {
@@ -78,11 +73,11 @@ a.navbar-brand {
 }
 
 a.navbar-brand:hover {
-    color: #edeef3;
+    color: #bbd;
 }
 
 a.navbar-brand img {
-    height: 40px;
+    height: 35px;
 }
 
 a {
@@ -94,23 +89,61 @@ a {
     cursor: pointer;
 }
 
+.fullscreen {
+    display: flex;
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    align-items: center;
+}
+
+.welcome {
+    width: 90%;
+    margin: auto;
+    margin-top: 10%;
+}
+
+.welcome img {
+    width: 100%;
+}
+
+.btn {
+    display: block;
+    border: 0;
+    color: #555;
+    margin-top: 20px;
+    width: 100%;
+    transition-duration: 0.2s;
+}
+
+.btn:hover {
+    color: #a5f;
+}
+
+.button-primary {
+    background-image: linear-gradient(to right, #cbf, #aaf);
+    padding: 0.5rem;
+}
+
+.button-secondary {
+    border: 3px solid #bbf;
+}
+
+.button-secondary:hover {
+    border-color: #dcf;
+    color: #a5f;
+}
+
 @media (min-width: 512px) {
-}
-
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-}
-
-@media (min-width: 1000px) {
     nav #menu-button {
         display: none;
     }
     nav #links {
-        position: absolute;
         display: inline-block;
-        left: 130px;
+        position: absolute;
         right: 0;
     }
     nav .links {
@@ -119,7 +152,26 @@ a {
     }
     nav .links a {
         float: right;
-        padding: 0rem 1rem;
+    }
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+    .welcome {
+        width: 80%;
+    }
+    .btn {
+        display: inline-block;
+        width: 40%;
+    }
+}
+
+@media (min-width: 1000px) {
+    nav {
+        width: 90%;
+        margin: auto;
     }
 }
 
