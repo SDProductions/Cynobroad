@@ -162,6 +162,9 @@ a {
     .welcome {
         width: 80%;
     }
+    .welcome img {
+        width: 80%;
+    }
     .btn {
         display: inline-block;
         width: 40%;
