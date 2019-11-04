@@ -47,7 +47,8 @@ namespace Continuum.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            public string Username { get; set; }
+            [DataType(DataType.EmailAddress)]
+            public string Email { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
@@ -82,7 +83,8 @@ namespace Continuum.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+                var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -112,7 +114,7 @@ namespace Continuum.Areas.Identity.Pages.Account
         {
             if (!ModelState.IsValid) return Page();
 
-            var user = await _userManager.FindByNameAsync(Input.Username);
+            var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
                 ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
@@ -126,7 +128,7 @@ namespace Continuum.Areas.Identity.Pages.Account
                 values: new { userId = userId, code = code },
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
-                user.Email,
+                Input.Email,
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
