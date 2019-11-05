@@ -11,7 +11,6 @@ html {
 }
 
 body {
-    background-image: linear-gradient(#fff, #dcf);
     background-color: #fff;
     margin-bottom: 60px;
 }
@@ -50,6 +49,10 @@ nav .links a {
 
 nav .links a:hover {
     color: #6daedb;
+}
+
+.nav-link {
+    padding: 0 1rem;
 }
 
 .nav-link button {
@@ -141,6 +144,42 @@ a {
     background-color: #dae;
 }
 
+#wave-transition {
+    width: 100%;
+    margin-top: 10%;
+}
+
+.container-purple {
+    background-color: #bae;
+    width: 100%;
+    padding: 5% 10%;
+}
+
+.border-top-pink {
+    border-top: 8px solid #dae !important;
+}
+
+.border-top-purple {
+    border-top: 8px solid #a6f !important;
+}
+
+.border-top-blue {
+    border-top: 8px solid #6daedb !important;
+}
+
+.flex-cards {
+    display: flex;
+    flex-direction: column;
+}
+
+.card {
+    border: 0;
+    border-radius: 5px;
+    flex: 1 1;
+    margin: 15px;
+    padding: 15px;
+}
+
 @media (min-width: 512px) {
     nav #menu-button {
         display: none;
@@ -186,6 +225,9 @@ a {
     }
     nav #links {
         right: 10%;
+    }
+    .flex-cards {
+        flex-direction: row;
     }
 }
 
