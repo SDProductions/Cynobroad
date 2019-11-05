@@ -13,7 +13,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Continuum.Areas.Identity.Data;
-using Continuum.Hubs;
 
 namespace Continuum
 {
@@ -36,7 +35,6 @@ namespace Continuum
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddSignalR();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -77,7 +75,6 @@ namespace Continuum
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapHub<ChatHub>("/chatHub");
                 endpoints.MapRazorPages();
             });
         }
