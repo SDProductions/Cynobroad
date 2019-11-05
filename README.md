@@ -1,6 +1,6 @@
-# Cynobroad
+# Continuum Project
 
-[![Build Status](https://travis-ci.org/SDProductions/Cynobroad.svg?branch=master)](https://travis-ci.org/SDProductions/Cynobroad) ![Github All Releases](https://img.shields.io/github/downloads/SDProductions/Cynobroad/total.svg)
+Hey look, it's finally being rebranded after a year!
 
 Cynobroad is a lightweight and portable chat program for Windows 7 and later. Currently, it is under development and definitely not stable, so a release is provided only to play around with.
 
