@@ -7,11 +7,14 @@ document.getElementById("sendButton").disabled = true;
 
 connection.on("ReceiveMessage", function (user, message) {
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    var encodedMsg = user + " says " + msg;
-    var li = document.createElement("li");
-    li.textContent = encodedMsg;
-    document.getElementById("messagesList").appendChild(li);
+    document.getElementById("messagesList").innerHTML += formatMessage(user, msg);
 });
+
+function formatMessage(user, message) {
+    return "<div class='message'><img class='profile-picture'/>" +
+        "<div class='message-content'><h5 class='message-header'>" +
+        user + " " + new Date().toLocaleTimeString() + "</h5><p>" + message + "</p></div></div>";
+}
 
 connection.start().then(function () {
     document.getElementById("sendButton").disabled = false;
@@ -24,5 +27,6 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     connection.invoke("SendMessage", message).catch(function (err) {
         return console.error(err.toString());
     });
+    document.getElementById("messageInput").value = "";
     event.preventDefault();
 });

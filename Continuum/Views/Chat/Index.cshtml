@@ -1,24 +1,19 @@
-﻿@{
-    ViewData["Title"] = "Chat";
+﻿
+@{
+    ViewData["Title"] = "Index";
 }
 
 <div class="menu">
-    <div class="server-menu">
+    <div id="server-menu">
 
     </div>
-    <div class="channel-menu">
+    <div id="channel-menu">
 
     </div>
 </div>
 
 <div class="chat">
-    <div class="messages">
-        <ul id="messagesList"></ul>
-    </div>
-    <div class="message-editor">
-        <input type="text" id="messageInput" />
-        <input type="button" id="sendButton" value="Send" class="btn btn-dark" />
-    </div>
+    <h1>Welcome back, @User.Identity.Name</h1>
 </div>
 
 <script src="~/lib/signalr/dist/browser/signalr.js"></script>

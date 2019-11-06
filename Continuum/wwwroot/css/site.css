@@ -116,7 +116,7 @@ a {
     width: 325px;
 }
 
-.server-menu {
+#server-menu {
     background-color: #fff;
     position: absolute;
     top: 0;
@@ -125,12 +125,12 @@ a {
     width: 60px;
 }
 
-.channel-menu {
+#channel-menu {
     background-color: #eee;
     border-top-left-radius: 10px;
     position: absolute;
     top: 0;
-    left: 50px;
+    left: 60px;
     bottom: 0;
     right: 0;
 }
@@ -142,6 +142,7 @@ a {
     right: 0;
     left: 325px;
     bottom: 0;
+    padding: 20px;
 }
 
 .messages {
