@@ -108,6 +108,15 @@ a {
     margin-top: 10%;
 }
 
+.floating-action {
+    display: flex;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
 .menu {
     position: absolute;
     top: 0;
@@ -284,8 +293,10 @@ a {
     .button-secondary {
         padding: 0.35rem !important;
     }
-    .flex-center > div {
-        width: 75%;
+    .floating-action {
+        align-items: center;
+        left: 15%;
+        width: 600px;
     }
 }
 

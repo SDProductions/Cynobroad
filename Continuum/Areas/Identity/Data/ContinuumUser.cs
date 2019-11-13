@@ -4,6 +4,6 @@ namespace Continuum.Areas.Identity.Data
 {
     public class ContinuumUser : IdentityUser
     {
-        public int Differentiator { get; set; }
+        public string Differentiator { get; set; }
     }
 }

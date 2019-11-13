@@ -74,13 +74,22 @@ namespace Continuum.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
+        private string GenerateDifferentiator()
+        {
+            Random rnd = new Random();
+            return $"{rnd.Next(0, 10)}{rnd.Next(0, 10)}{rnd.Next(0, 10)}{rnd.Next(0, 10)}";
+        }
+
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ContinuumUser { UserName = Input.Username, Email = Input.Email };
+                string dif = GenerateDifferentiator();
+                while (_userManager.Users.Any(x => x.Differentiator == dif)) dif = GenerateDifferentiator();
+                var user = new ContinuumUser { UserName = Input.Username, Differentiator = dif, Email = Input.Email };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
