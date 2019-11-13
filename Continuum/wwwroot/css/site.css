@@ -91,6 +91,10 @@ a {
     transition-duration: 0.2s;
 }
 
+.subtext {
+    color: #777;
+}
+
 .clickable {
     cursor: pointer;
 }
@@ -235,18 +239,18 @@ a {
 }
 
 .border-top-pink {
-    border-top: 8px solid #dae !important;
+    border-top: 8px solid #ffd3da !important;
 }
 
 .border-top-purple {
-    border-top: 8px solid #a6f !important;
+    border-top: 8px solid #e2a0ff !important;
 }
 
 .border-top-blue {
-    border-top: 8px solid #6daedb !important;
+    border-top: 8px solid #89daff !important;
 }
 
-.flex-cards {
+.flex-cards, .flex-cards-large {
     display: flex;
     flex-direction: column;
 }
@@ -310,6 +314,9 @@ a {
 }
 
 @media (min-width: 1200px) {
+    .flex-cards-large {
+        flex-direction: row;
+    }
 }
 
 @media (min-width: 1400px) {

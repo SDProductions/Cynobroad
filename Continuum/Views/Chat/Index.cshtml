@@ -14,6 +14,21 @@
 
 <div class="chat">
     <h1>Welcome back, @User.Identity.Name</h1>
+    <hr />
+    <div class="flex-cards-large">
+        <div class="card border-top-purple animated fadeInDown">
+            <h2>Unread Messages</h2>
+            <p class="subtext">You have no unread messages.</p>
+        </div>
+        <div class="card border-top-pink animated fadeInDown d-200">
+            <h2>Friends</h2>
+            <p class="subtext">If you had any.</p>
+        </div>
+        <div class="card border-top-blue animated fadeInDown d-400">
+            <h2>News Feed</h2>
+            <p class="subtext">Powered by OpenTalon.</p>
+        </div>
+    </div>
 </div>
 
 <script src="~/lib/signalr/dist/browser/signalr.js"></script>
