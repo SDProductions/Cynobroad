@@ -131,11 +131,31 @@ a {
 
 #server-menu {
     background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     width: 60px;
+}
+
+#server-menu a {
+    background-color: #dae;
+    border-radius: 50%;
+    color: #555;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    font-size: 2rem;
+    line-height: 44px;
+    transition-duration: 0.2s;
+}
+
+#server-menu a:hover {
+    background-color: #a6f;
+    color: #fff;
 }
 
 #channel-menu {
@@ -146,6 +166,17 @@ a {
     left: 60px;
     bottom: 0;
     right: 0;
+}
+
+#channel-menu a {
+    background-color: #ddd;
+    border-radius: 5px;
+    color: #555;
+    display: block;
+    height: 45px;
+    line-height: 42px;
+    margin: 10px;
+    padding: 0 15px;
 }
 
 .chat {

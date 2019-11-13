@@ -1,16 +1,8 @@
 ﻿
 @{
     ViewData["Title"] = "Index";
+    Layout = "_ChatLayout";
 }
-
-<div class="menu">
-    <div id="server-menu">
-
-    </div>
-    <div id="channel-menu">
-
-    </div>
-</div>
 
 <div class="chat">
     <h1>Welcome back, @User.Identity.Name</h1>
@@ -21,7 +13,7 @@
             <p class="subtext">You have no unread messages.</p>
         </div>
         <div class="card border-top-pink animated fadeInDown d-200">
-            <h2>Friends</h2>
+            <h2>Online Friends</h2>
             <p class="subtext">If you had any.</p>
         </div>
         <div class="card border-top-blue animated fadeInDown d-400">
@@ -30,6 +22,3 @@
         </div>
     </div>
 </div>
-
-<script src="~/lib/signalr/dist/browser/signalr.js"></script>
-<script src="~/js/chat.js"></script>

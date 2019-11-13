@@ -1,4 +1,8 @@
-﻿@{
+﻿@using Continuum.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ContinuumUser> SignInManager
+
+@{
     ViewData["Title"] = "Home";
 }
 
@@ -6,7 +10,10 @@
     <div class="content">
         <img src="~/img/continuum.svg" />
         <div>
-            <a href="~/Identity/Account/Register" class="btn button-primary">Register</a>
+            @if (!SignInManager.IsSignedIn(User))
+            {
+                <a href="~/Identity/Account/Register" class="btn button-primary">Register</a>
+            }
             <a href="~/app" class="btn button-secondary">Open Continuum</a>
         </div>
     </div>

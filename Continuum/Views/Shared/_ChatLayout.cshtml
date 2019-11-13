@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Continuum</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/animatecss/animate.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav id="nav">
+            <a class="navbar-brand" href="~/app"><img src="~/img/ctm.svg" /></a>
+            <button id="menu-button" onclick="showMenu()">Menu</button>
+            <div id="links">
+                <div class="links">
+                </div>
+                <div class="links float-right">
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="fullscreen">
+        <div class="menu">
+            <div id="server-menu">
+                <a class="clickable">+</a>
+            </div>
+            <div id="channel-menu">
+                <a href="#">Home</a>
+                <a href="#">Friends</a>
+                <a href="#">News</a>
+            </div>
+        </div>
+        @RenderBody()
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/chat.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
