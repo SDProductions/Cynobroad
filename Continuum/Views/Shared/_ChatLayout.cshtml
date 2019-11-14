@@ -26,7 +26,7 @@
     <div class="fullscreen">
         <div class="menu">
             <div id="server-menu">
-                <a class="clickable">+</a>
+                <a class="clickable" onclick="setDialog('addServer')">+</a>
             </div>
             <div id="channel-menu">
                 <a href="#">Home</a>
@@ -35,6 +35,31 @@
             </div>
         </div>
         @RenderBody()
+    </div>
+
+    <div class="fullscreen query" id="dialog" onclick="hideDialog()">
+        <div id="addServer" class="flex-cards" onclick="stopPropogation(event)">
+            <div class="card">
+                <h2>Create Server</h2>
+                <form asp-controller="Home" asp-action="Create">
+                    <div class="form-group">
+                        <label for="serverName">Server Name:</label>
+                        <input type="text" id="serverName" class="text-input" placeholder="Ex: Gamer Den 1337" />
+                    </div>
+                    <button type="submit" class="btn button-primary w-100">Create</button>
+                </form>
+            </div>
+            <div class="card">
+                <h2>Join Server</h2>
+                <form asp-controller="Home" asp-action="Join">
+                    <div class="form-group">
+                        <label for="inviteCode">Invite Code:</label>
+                        <input type="text" id="inviteCode" class="text-input" placeholder="Ex: https://cntm.ml/ABCDEF" />
+                    </div>
+                    <button type="submit" class="btn button-secondary w-100">Join</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

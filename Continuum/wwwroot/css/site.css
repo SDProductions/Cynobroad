@@ -112,12 +112,31 @@ a {
     margin-top: 10%;
 }
 
-.floating-action {
+.floating-action, .query {
     display: flex;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
+    width: 100%;
+}
+
+.query {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+.query > div {
+    background-color: #fff;
+    border-radius: 10px;
+    width: 60%;
+    margin: auto;
+}
+
+.text-input {
+    border: 1px solid #a6f;
+    border-radius: 5px;
+    padding: 5px;
     width: 100%;
 }
 
